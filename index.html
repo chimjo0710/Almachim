@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="meta-title">現代藝術家 | 官方網站</title>
+    <meta name="description" id="meta-desc" content="探索藝術的邊界，現代藝術家的數位藝廊與專業畫畫班。">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --accent-color: #ffffff;
-            --accent-hover: #e4e4e7;
+            --theme-color: #ffffff; /* 動態主題色 */
+            --theme-text: #000000;  /* 動態主題文字色 */
         }
         body { font-family: 'Helvetica Neue', Helvetica, Arial, 'PingFang TC', 'Microsoft JhengHei', sans-serif; background-color: #09090b; color: #fafafa; }
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
@@ -26,9 +27,21 @@
 
         .glass-panel { background: rgba(24, 24, 27, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
         
-        .admin-menu-active { background-color: #27272a; color: white; border-left: 3px solid white; }
+        /* 主題色應用類別 */
+        .bg-theme { background-color: var(--theme-color); color: var(--theme-text); }
+        .bg-theme:hover { filter: brightness(0.9); }
+        .text-theme { color: var(--theme-color); }
+        .border-theme { border-color: var(--theme-color); }
+        .hover-text-theme:hover { color: var(--theme-color); }
+        
+        /* 後台選單活動狀態 */
+        .admin-menu-active { background-color: #27272a; color: white; border-left: 3px solid var(--theme-color); }
         .admin-section { display: none; }
         .admin-section.active { display: block; animation: fadeIn 0.3s ease; }
+        
+        /* 上傳進度條 */
+        .upload-progress { height: 4px; background: #3f3f46; width: 100%; border-radius: 2px; overflow: hidden; display: none; margin-top: 8px;}
+        .upload-progress-bar { height: 100%; background: var(--theme-color); width: 0%; transition: width 0.3s; }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col">
@@ -42,7 +55,7 @@
                     <button id="auth-btn" class="text-sm font-medium text-zinc-400 hover:text-white transition-colors flex items-center gap-2">
                         <i class="fa-solid fa-circle-user"></i> <span id="auth-text">管理員登入</span>
                     </button>
-                    <button id="admin-nav-btn" class="hidden text-sm font-medium bg-white text-black px-3 py-1.5 rounded hover:bg-zinc-200 transition-colors">
+                    <button id="admin-nav-btn" class="hidden text-sm font-medium bg-theme px-3 py-1.5 rounded transition-all">
                         管理後台
                     </button>
                 </div>
@@ -52,10 +65,10 @@
                 </div>
 
                 <nav class="hidden md:flex space-x-8">
-                    <button onclick="navigate('home')" id="disp-nav-home" class="text-sm font-medium text-zinc-300 hover:text-white transition-colors">首頁</button>
-                    <button onclick="navigate('portfolio')" id="disp-nav-port" class="text-sm font-medium text-zinc-300 hover:text-white transition-colors">作品集</button>
-                    <button onclick="navigate('classes')" id="disp-nav-class" class="text-sm font-medium text-zinc-300 hover:text-white transition-colors">畫畫班</button>
-                    <button onclick="navigate('contact')" id="disp-nav-contact" class="text-sm font-medium text-zinc-300 hover:text-white transition-colors">聯絡我們</button>
+                    <button onclick="navigate('home')" id="disp-nav-home" class="text-sm font-medium text-zinc-300 hover-text-theme transition-colors">首頁</button>
+                    <button onclick="navigate('portfolio')" id="disp-nav-port" class="text-sm font-medium text-zinc-300 hover-text-theme transition-colors">作品集</button>
+                    <button onclick="navigate('classes')" id="disp-nav-class" class="text-sm font-medium text-zinc-300 hover-text-theme transition-colors">畫畫班</button>
+                    <button onclick="navigate('contact')" id="disp-nav-contact" class="text-sm font-medium text-zinc-300 hover-text-theme transition-colors">聯絡我們</button>
                 </nav>
 
                 <div class="md:hidden flex items-center">
@@ -81,15 +94,15 @@
         <!-- 首頁 -->
         <section id="view-home" class="view-section min-h-[calc(100vh-4rem)] flex items-center justify-center relative overflow-hidden">
             <div class="absolute inset-0 z-0">
-                <img id="disp-hero-bg" src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=2071&auto=format&fit=crop" alt="Background" class="w-full h-full object-cover opacity-30">
+                <img id="disp-hero-bg" src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=2071&auto=format&fit=crop" class="w-full h-full object-cover opacity-30">
                 <div class="absolute inset-0 bg-gradient-to-b from-zinc-950/50 to-zinc-950"></div>
             </div>
             <div class="relative z-10 text-center px-4 max-w-4xl mx-auto fade-in">
                 <h2 id="disp-hero-title" class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6">載入中...</h2>
                 <p id="disp-hero-sub" class="text-lg md:text-2xl text-zinc-400 mb-10 max-w-2xl mx-auto leading-relaxed">請稍候</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button onclick="navigate('portfolio')" id="disp-hero-btn1" class="px-8 py-4 bg-white text-black font-bold rounded hover:bg-zinc-200 transition-transform transform hover:-translate-y-1">觀看作品</button>
-                    <button onclick="navigate('classes')" id="disp-hero-btn2" class="px-8 py-4 bg-transparent border border-white text-white font-bold rounded hover:bg-white/10 transition-transform transform hover:-translate-y-1">報名畫畫班</button>
+                    <button onclick="navigate('portfolio')" id="disp-hero-btn1" class="px-8 py-4 bg-theme font-bold rounded shadow-lg transition-transform transform hover:-translate-y-1">觀看作品</button>
+                    <button onclick="navigate('classes')" id="disp-hero-btn2" class="px-8 py-4 bg-transparent border border-theme text-white font-bold rounded hover:bg-white/10 transition-transform transform hover:-translate-y-1">報名畫畫班</button>
                 </div>
             </div>
         </section>
@@ -97,7 +110,7 @@
         <!-- 作品集 -->
         <section id="view-portfolio" class="view-section hidden max-w-7xl mx-auto px-4 py-12 md:py-20 fade-in">
             <div class="text-center mb-12">
-                <h2 id="disp-port-title" class="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-widest">Selected Works</h2>
+                <h2 id="disp-port-title" class="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-widest text-theme">Selected Works</h2>
                 <p id="disp-port-sub" class="text-zinc-400 max-w-2xl mx-auto">精選歷年創作，探索不同媒材與主題的視覺語言。</p>
             </div>
             <div id="portfolio-filters" class="flex flex-wrap justify-center gap-3 mb-10"></div>
@@ -109,33 +122,18 @@
         <!-- 畫畫班 -->
         <section id="view-classes" class="view-section hidden max-w-4xl mx-auto px-4 py-12 md:py-20 fade-in">
             <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
-                <h2 id="disp-class-title" class="text-3xl md:text-4xl font-bold mb-6 relative z-10">專業畫畫班招生</h2>
-                <div id="disp-class-desc" class="text-zinc-400 mb-10 leading-relaxed space-y-4 relative z-10 whitespace-pre-wrap">請填寫下方表單，我們將盡快與您聯絡確認名額。</div>
+                <h2 id="disp-class-title" class="text-3xl md:text-4xl font-bold mb-6 text-theme">專業畫畫班招生</h2>
+                <div id="disp-class-desc" class="text-zinc-400 mb-10 leading-relaxed space-y-4 whitespace-pre-wrap">請填寫下方表單，我們將盡快與您聯絡確認名額。</div>
                 
-                <form id="class-form" class="space-y-6 relative z-10">
+                <form id="class-form" class="space-y-6">
                     <h3 class="text-xl font-bold border-b border-zinc-800 pb-2 mb-4">報名意願表單</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-zinc-400 mb-2">姓名 *</label>
-                            <input type="text" id="class-name" required class="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-white focus:outline-none focus:border-white transition-colors">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-zinc-400 mb-2">聯絡電話 *</label>
-                            <input type="tel" id="class-phone" required class="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-white focus:outline-none focus:border-white transition-colors">
-                        </div>
+                        <div><label class="block text-sm font-medium text-zinc-400 mb-2">姓名 *</label><input type="text" id="class-name" required class="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-white focus:outline-none focus:border-theme transition-colors"></div>
+                        <div><label class="block text-sm font-medium text-zinc-400 mb-2">聯絡電話 *</label><input type="tel" id="class-phone" required class="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-white focus:outline-none focus:border-theme transition-colors"></div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-zinc-400 mb-2">電子郵件 *</label>
-                        <input type="email" id="class-email" required class="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-white focus:outline-none focus:border-white transition-colors">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-zinc-400 mb-2">想學習的程度或目標</label>
-                        <textarea id="class-message" rows="4" class="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-white text-black font-bold py-4 rounded hover:bg-zinc-200 transition-colors">
-                        送出報名資料
-                    </button>
+                    <div><label class="block text-sm font-medium text-zinc-400 mb-2">電子郵件 *</label><input type="email" id="class-email" required class="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-white focus:outline-none focus:border-theme transition-colors"></div>
+                    <div><label class="block text-sm font-medium text-zinc-400 mb-2">想學習的程度或目標</label><textarea id="class-message" rows="4" class="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-white focus:outline-none focus:border-theme transition-colors"></textarea></div>
+                    <button type="submit" class="w-full bg-theme font-bold py-4 rounded shadow-lg transition-colors">送出報名資料</button>
                 </form>
             </div>
         </section>
@@ -144,63 +142,51 @@
         <section id="view-contact" class="view-section hidden max-w-6xl mx-auto px-4 py-12 md:py-20 fade-in">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
                 <div>
-                    <h2 id="disp-contact-title" class="text-4xl font-bold mb-6">聯絡資訊</h2>
+                    <h2 id="disp-contact-title" class="text-4xl font-bold mb-6 text-theme">聯絡資訊</h2>
                     <p id="disp-contact-desc" class="text-zinc-400 mb-10 leading-relaxed whitespace-pre-wrap">歡迎透過表單或以下方式與我聯絡。</p>
-                    <div class="space-y-6 bg-zinc-900 p-8 rounded-2xl border border-zinc-800">
-                        <div class="flex items-center gap-4 text-zinc-300">
-                            <div class="w-12 h-12 bg-zinc-950 rounded flex items-center justify-center border border-zinc-800"><i class="fa-solid fa-envelope"></i></div>
-                            <div><p class="text-xs text-zinc-500 mb-1">電子郵件</p><span id="disp-info-email" class="font-medium">chimjo0710@gmail.com</span></div>
-                        </div>
-                        <div class="flex items-center gap-4 text-zinc-300">
-                            <div class="w-12 h-12 bg-zinc-950 rounded flex items-center justify-center border border-zinc-800"><i class="fa-solid fa-phone"></i></div>
-                            <div><p class="text-xs text-zinc-500 mb-1">聯絡電話</p><span id="disp-info-phone" class="font-medium">暫未提供</span></div>
-                        </div>
-                        <div class="flex items-center gap-4 text-zinc-300">
-                            <div class="w-12 h-12 bg-zinc-950 rounded flex items-center justify-center border border-zinc-800"><i class="fa-solid fa-location-dot"></i></div>
-                            <div><p class="text-xs text-zinc-500 mb-1">工作室地址</p><span id="disp-info-address" class="font-medium">預約制開放</span></div>
-                        </div>
-                        <div class="flex items-center gap-4 text-zinc-300">
-                            <div class="w-12 h-12 bg-zinc-950 rounded flex items-center justify-center border border-zinc-800"><i class="fa-brands fa-instagram text-xl"></i></div>
-                            <div><p class="text-xs text-zinc-500 mb-1">Instagram</p><span id="disp-info-ig" class="font-medium">@artstudio</span></div>
-                        </div>
+                    <div class="space-y-6 bg-zinc-900 p-8 rounded-2xl border border-zinc-800" id="disp-contact-info-container">
+                        <!-- 動態生成聯絡資訊與社群連結 -->
                     </div>
                 </div>
                 
                 <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 shadow-2xl">
                     <h3 class="text-2xl font-bold mb-6">發送訊息</h3>
                     <form id="contact-form" class="space-y-6">
-                        <div><label class="block text-sm font-medium text-zinc-400 mb-2">您的姓名 *</label><input type="text" id="contact-name" required class="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"></div>
-                        <div><label class="block text-sm font-medium text-zinc-400 mb-2">您的電子郵件 *</label><input type="email" id="contact-email" required class="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"></div>
-                        <div><label class="block text-sm font-medium text-zinc-400 mb-2">訊息內容 *</label><textarea id="contact-message" rows="5" required class="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"></textarea></div>
-                        <button type="submit" class="w-full bg-white text-black font-bold py-3 rounded hover:bg-zinc-200 transition-colors">發送訊息</button>
+                        <div><label class="block text-sm font-medium text-zinc-400 mb-2">您的姓名 *</label><input type="text" id="contact-name" required class="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-white focus:outline-none focus:border-theme transition-colors"></div>
+                        <div><label class="block text-sm font-medium text-zinc-400 mb-2">您的電子郵件 *</label><input type="email" id="contact-email" required class="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-white focus:outline-none focus:border-theme transition-colors"></div>
+                        <div><label class="block text-sm font-medium text-zinc-400 mb-2">訊息內容 *</label><textarea id="contact-message" rows="5" required class="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-white focus:outline-none focus:border-theme transition-colors"></textarea></div>
+                        <button type="submit" class="w-full bg-theme font-bold py-3 rounded shadow-lg transition-colors">發送訊息</button>
                     </form>
                 </div>
             </div>
         </section>
 
-        <!-- 管理員後台 -->
+        <!-- 超強管理員後台 -->
         <section id="view-admin" class="view-section hidden w-full px-4 py-8 fade-in bg-zinc-950 min-h-screen -mt-16 pt-24">
             <div class="max-w-screen-2xl mx-auto flex flex-col lg:flex-row gap-8">
                 
                 <div class="w-full lg:w-64 flex-shrink-0">
-                    <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden sticky top-24">
+                    <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden sticky top-24 shadow-2xl">
                         <div class="p-4 border-b border-zinc-800 bg-black/50">
-                            <h3 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-screwdriver-wrench text-zinc-400"></i> 控制面板</h3>
+                            <h3 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-theme"></i> 控制面板</h3>
                         </div>
                         <div class="flex flex-col py-2">
-                            <div class="px-4 py-2 text-xs font-bold text-zinc-500 uppercase tracking-wider mt-2">網站內容編輯</div>
-                            <button onclick="switchAdminMenu('global')" id="menu-global" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white transition-colors admin-menu-active">全域與導航列</button>
-                            <button onclick="switchAdminMenu('home')" id="menu-home" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white transition-colors">首頁 (Hero) 設定</button>
-                            <button onclick="switchAdminMenu('port')" id="menu-port" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white transition-colors">作品集頁面文字</button>
-                            <button onclick="switchAdminMenu('class')" id="menu-class" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white transition-colors">畫畫班頁面文字</button>
-                            <button onclick="switchAdminMenu('contact')" id="menu-contact" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white transition-colors">聯絡資訊與文字</button>
+                            <div class="px-4 py-2 text-xs font-bold text-zinc-500 uppercase tracking-wider mt-2">外觀與全域</div>
+                            <button onclick="switchAdminMenu('theme')" id="menu-theme" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white transition-colors admin-menu-active">主題外觀 & SEO</button>
+                            <button onclick="switchAdminMenu('global')" id="menu-global" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white transition-colors">導航列與頁尾</button>
                             
-                            <div class="px-4 py-2 text-xs font-bold text-zinc-500 uppercase tracking-wider mt-4">資料管理</div>
+                            <div class="px-4 py-2 text-xs font-bold text-zinc-500 uppercase tracking-wider mt-4">頁面內容編輯</div>
+                            <button onclick="switchAdminMenu('home')" id="menu-home" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white transition-colors">首頁 (Hero) 視覺</button>
+                            <button onclick="switchAdminMenu('port')" id="menu-port" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white transition-colors">作品集簡介</button>
+                            <button onclick="switchAdminMenu('class')" id="menu-class" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white transition-colors">畫畫班招生內容</button>
+                            <button onclick="switchAdminMenu('contact')" id="menu-contact" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white transition-colors">聯絡資訊與社群</button>
+                            
+                            <div class="px-4 py-2 text-xs font-bold text-zinc-500 uppercase tracking-wider mt-4">資料管理庫</div>
                             <button onclick="switchAdminMenu('artworks')" id="menu-artworks" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white transition-colors flex justify-between items-center">
-                                <span>上傳與分類管理</span>
+                                <span>作品與分類管理</span>
                             </button>
                             <button onclick="switchAdminMenu('submissions')" id="menu-submissions" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white transition-colors flex justify-between items-center">
-                                <span>客戶表單收件匣</span>
+                                <span>表單收件匣</span>
                                 <span id="new-badge" class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full hidden">新</span>
                             </button>
                         </div>
@@ -209,79 +195,129 @@
 
                 <div class="flex-grow bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl relative overflow-hidden">
                     <form id="master-settings-form">
-                        <div class="bg-zinc-800/50 border-b border-zinc-800 p-4 flex justify-between items-center sticky top-0 z-10 backdrop-blur-md">
-                            <h2 id="admin-section-title" class="text-xl font-bold">全域與導航列設定</h2>
-                            <button type="submit" id="save-settings-btn" class="bg-white text-black font-bold py-2 px-6 rounded hover:bg-zinc-200 shadow-lg flex items-center gap-2 transition-all">
-                                <i class="fa-solid fa-floppy-disk"></i> 儲存所有文字變更
+                        <div class="bg-zinc-800/80 border-b border-zinc-800 p-4 flex justify-between items-center sticky top-0 z-10 backdrop-blur-md">
+                            <h2 id="admin-section-title" class="text-xl font-bold">主題外觀 & SEO</h2>
+                            <button type="submit" id="save-settings-btn" class="bg-theme font-bold py-2 px-6 rounded shadow-lg flex items-center gap-2 transition-all">
+                                <i class="fa-solid fa-floppy-disk"></i> 儲存所有設定變更
                             </button>
                         </div>
 
                         <div class="p-6 md:p-8">
+                            <!-- Theme & SEO -->
+                            <div id="sec-theme" class="admin-section active space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="bg-zinc-950 p-5 rounded-lg border border-zinc-800">
+                                        <label class="block text-sm font-bold text-zinc-200 mb-3"><i class="fa-solid fa-palette text-theme mr-2"></i>網站品牌主題色</label>
+                                        <div class="flex items-center gap-4">
+                                            <input type="color" id="set-theme-color" class="w-16 h-12 rounded cursor-pointer bg-transparent border-0 p-0">
+                                            <div class="text-xs text-zinc-400">點擊左側色塊更改全站按鈕與高亮文字的顏色。<br>建議選擇亮色系以搭配深色背景。</div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-zinc-950 p-5 rounded-lg border border-zinc-800">
+                                        <label class="block text-sm font-bold text-zinc-200 mb-3"><i class="fa-solid fa-magnifying-glass text-theme mr-2"></i>SEO 網站描述 (Meta Description)</label>
+                                        <textarea id="set-meta-desc" rows="3" class="w-full bg-black border border-zinc-700 rounded p-3 text-white text-sm" placeholder="讓 Google 搜尋引擎讀取的網站簡介..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Global -->
-                            <div id="sec-global" class="admin-section active space-y-6">
-                                <p class="text-sm text-zinc-400 mb-6">修改網站左上角的 Logo 文字以及導航列的按鈕名稱。頁尾版權文字也可在此修改。</p>
+                            <div id="sec-global" class="admin-section space-y-6">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">網站 Logo 文字</label><input type="text" id="set-logo" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
-                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">瀏覽器標題 (Tab 顯示)</label><input type="text" id="set-meta-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
-                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">導航列: 首頁</label><input type="text" id="set-nav-home" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
-                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">導航列: 作品集</label><input type="text" id="set-nav-port" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
-                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">導航列: 畫畫班</label><input type="text" id="set-nav-class" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
-                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">導航列: 聯絡我們</label><input type="text" id="set-nav-contact" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
+                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">瀏覽器標題 (Tab Title)</label><input type="text" id="set-meta-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
+                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">導航: 首頁</label><input type="text" id="set-nav-home" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
+                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">導航: 作品集</label><input type="text" id="set-nav-port" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
+                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">導航: 畫畫班</label><input type="text" id="set-nav-class" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
+                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">導航: 聯絡我們</label><input type="text" id="set-nav-contact" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
                                     <div class="col-span-full space-y-1"><label class="text-sm font-medium text-zinc-300">頁尾版權宣告 (Footer)</label><input type="text" id="set-footer" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
                                 </div>
                             </div>
+
                             <!-- Home -->
                             <div id="sec-home" class="admin-section space-y-6">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div class="col-span-full space-y-1"><label class="text-sm font-medium text-zinc-300">首頁大標題</label><input type="text" id="set-hero-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
+                                    <div class="col-span-full space-y-1"><label class="text-sm font-medium text-zinc-300">首頁大標題</label><input type="text" id="set-hero-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white text-lg font-bold"></div>
                                     <div class="col-span-full space-y-1"><label class="text-sm font-medium text-zinc-300">首頁副標題</label><textarea id="set-hero-sub" rows="2" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></textarea></div>
-                                    <div class="col-span-full space-y-1"><label class="text-sm font-medium text-zinc-300">背景圖片網址</label><input type="url" id="set-hero-bg" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
-                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">主按鈕一</label><input type="text" id="set-hero-btn1" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
-                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">主按鈕二</label><input type="text" id="set-hero-btn2" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
+                                    
+                                    <div class="col-span-full bg-zinc-950 p-5 rounded-lg border border-zinc-800">
+                                        <label class="block text-sm font-bold text-zinc-200 mb-3">首頁背景圖片</label>
+                                        <div class="flex gap-4 items-start">
+                                            <img id="preview-hero-bg" src="" class="w-32 h-20 object-cover rounded border border-zinc-700">
+                                            <div class="flex-grow space-y-3">
+                                                <input type="url" id="set-hero-bg" class="w-full bg-black border border-zinc-700 rounded p-2.5 text-white text-sm" placeholder="輸入圖片網址 或 使用下方上傳">
+                                                <div class="flex items-center gap-2">
+                                                    <input type="file" id="upload-hero-bg" accept="image/*" class="text-sm text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-zinc-800 file:text-white hover:file:bg-zinc-700 cursor-pointer">
+                                                    <button type="button" onclick="handleHeroUpload()" class="px-3 py-1.5 bg-zinc-700 hover:bg-zinc-600 rounded text-sm text-white transition-colors">開始上傳</button>
+                                                </div>
+                                                <div id="hero-progress" class="upload-progress"><div id="hero-progress-bar" class="upload-progress-bar"></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">主按鈕一 (實心)</label><input type="text" id="set-hero-btn1" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
+                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">主按鈕二 (透明邊框)</label><input type="text" id="set-hero-btn2" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
                                 </div>
                             </div>
+
                             <!-- Port -->
                             <div id="sec-port" class="admin-section space-y-6">
                                 <div class="space-y-4">
-                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">頁面標題</label><input type="text" id="set-port-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
+                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">區塊主標題</label><input type="text" id="set-port-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
                                     <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">簡介副標題</label><textarea id="set-port-sub" rows="2" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></textarea></div>
                                 </div>
                             </div>
+
                             <!-- Class -->
                             <div id="sec-class" class="admin-section space-y-6">
                                 <div class="space-y-4">
-                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">區塊大標題</label><input type="text" id="set-class-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
-                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">詳細介紹內容</label><textarea id="set-class-desc" rows="6" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></textarea></div>
+                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">區塊主標題</label><input type="text" id="set-class-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
+                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">詳細介紹內容 (支援換行)</label><textarea id="set-class-desc" rows="6" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></textarea></div>
                                 </div>
                             </div>
+
                             <!-- Contact -->
                             <div id="sec-contact" class="admin-section space-y-6">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div class="col-span-full space-y-1"><label class="text-sm font-medium text-zinc-300">區塊大標題</label><input type="text" id="set-contact-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
+                                    <div class="col-span-full space-y-1"><label class="text-sm font-medium text-zinc-300">區塊主標題</label><input type="text" id="set-contact-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
                                     <div class="col-span-full space-y-1"><label class="text-sm font-medium text-zinc-300">引言說明</label><textarea id="set-contact-desc" rows="3" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></textarea></div>
-                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">公開 Email</label><input type="text" id="set-info-email" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
-                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">公開電話</label><input type="text" id="set-info-phone" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
-                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">工作室地址</label><input type="text" id="set-info-address" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
-                                    <div class="space-y-1"><label class="text-sm font-medium text-zinc-300">Instagram 帳號</label><input type="text" id="set-info-ig" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
+                                    
+                                    <div class="col-span-full bg-zinc-950 p-5 rounded-lg border border-zinc-800 mt-4">
+                                        <h4 class="font-bold text-zinc-200 mb-4 border-b border-zinc-800 pb-2">基本聯絡資訊</h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div class="space-y-1"><label class="text-xs text-zinc-400">公開 Email</label><input type="text" id="set-info-email" class="w-full bg-black border border-zinc-700 rounded p-2 text-white text-sm"></div>
+                                            <div class="space-y-1"><label class="text-xs text-zinc-400">公開電話</label><input type="text" id="set-info-phone" class="w-full bg-black border border-zinc-700 rounded p-2 text-white text-sm"></div>
+                                            <div class="space-y-1"><label class="text-xs text-zinc-400">工作室地址</label><input type="text" id="set-info-address" class="w-full bg-black border border-zinc-700 rounded p-2 text-white text-sm"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-span-full bg-zinc-950 p-5 rounded-lg border border-zinc-800">
+                                        <h4 class="font-bold text-zinc-200 mb-4 border-b border-zinc-800 pb-2">社群平台連結 (留空則不顯示)</h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div class="space-y-1"><label class="text-xs text-zinc-400"><i class="fa-brands fa-instagram"></i> Instagram 連結/帳號</label><input type="text" id="set-social-ig" class="w-full bg-black border border-zinc-700 rounded p-2 text-white text-sm"></div>
+                                            <div class="space-y-1"><label class="text-xs text-zinc-400"><i class="fa-brands fa-facebook"></i> Facebook 連結</label><input type="text" id="set-social-fb" class="w-full bg-black border border-zinc-700 rounded p-2 text-white text-sm"></div>
+                                            <div class="space-y-1"><label class="text-xs text-zinc-400"><i class="fa-brands fa-youtube"></i> YouTube 連結</label><input type="text" id="set-social-yt" class="w-full bg-black border border-zinc-700 rounded p-2 text-white text-sm"></div>
+                                            <div class="space-y-1"><label class="text-xs text-zinc-400"><i class="fa-brands fa-x-twitter"></i> X (Twitter) 連結</label><input type="text" id="set-social-x" class="w-full bg-black border border-zinc-700 rounded p-2 text-white text-sm"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </form>
 
-                    <!-- Artworks -->
+                    <!-- Artworks Management -->
                     <div id="sec-artworks" class="admin-section p-6 md:p-8 space-y-8">
                         <div class="bg-zinc-950 rounded-xl p-6 border border-zinc-800">
                             <h3 class="text-lg font-bold mb-4">第一步：分類管理</h3>
                             <form id="add-category-form" class="flex gap-4 mb-4">
-                                <input type="text" id="new-category-name" required placeholder="新增分類" class="flex-grow bg-black border border-zinc-700 rounded p-2.5 text-white">
-                                <button type="submit" class="bg-zinc-700 text-white px-6 rounded font-medium hover:bg-zinc-600">新增</button>
+                                <input type="text" id="new-category-name" required placeholder="新增分類名稱" class="flex-grow bg-black border border-zinc-700 rounded p-2.5 text-white">
+                                <button type="submit" class="bg-zinc-700 text-white px-6 rounded font-medium hover:bg-zinc-600 transition-colors">新增分類</button>
                             </form>
                             <div class="flex flex-wrap gap-2" id="admin-categories-list"></div>
                         </div>
                         <div>
                             <div class="flex justify-between items-center mb-4">
                                 <h3 class="text-lg font-bold">第二步：作品管理</h3>
-                                <button onclick="openArtworkModal()" class="bg-white text-black px-4 py-2 rounded font-medium text-sm hover:bg-zinc-200 shadow"><i class="fa-solid fa-plus mr-2"></i>上傳新作品</button>
+                                <button onclick="openArtworkModal()" class="bg-theme font-bold px-4 py-2 rounded shadow transition-transform hover:-translate-y-0.5"><i class="fa-solid fa-cloud-arrow-up mr-2"></i>上傳新作品</button>
                             </div>
                             <div class="overflow-x-auto bg-zinc-950 border border-zinc-800 rounded-xl">
                                 <table class="w-full text-left border-collapse">
@@ -299,20 +335,20 @@
                         </div>
                     </div>
 
-                    <!-- Submissions -->
+                    <!-- Submissions Inbox -->
                     <div id="sec-submissions" class="admin-section p-6 md:p-8 space-y-6">
                         <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 border-b border-zinc-800 pb-4">
-                            <p class="text-zinc-400 text-sm">所有來自用戶的報名與詢問都會顯示在這裡。</p>
+                            <p class="text-zinc-400 text-sm">所有來自用戶的報名與詢問表單。</p>
                             <div class="flex gap-2">
                                 <select id="filter-sub-type" class="bg-zinc-950 border border-zinc-800 rounded px-3 py-1.5 text-sm text-white" onchange="renderSubmissions()">
                                     <option value="all">所有來源</option>
                                     <option value="class">畫畫班報名</option>
-                                    <option value="contact">聯絡我們</option>
+                                    <option value="contact">一般聯絡</option>
                                 </select>
                                 <select id="filter-sub-status" class="bg-zinc-950 border border-zinc-800 rounded px-3 py-1.5 text-sm text-white" onchange="renderSubmissions()">
                                     <option value="all">所有狀態</option>
                                     <option value="pending">待處理</option>
-                                    <option value="contacted">處理中/已聯絡</option>
+                                    <option value="contacted">處理中</option>
                                     <option value="resolved">已結案</option>
                                 </select>
                             </div>
@@ -326,49 +362,75 @@
     </main>
 
     <footer class="border-t border-zinc-900 bg-black mt-auto">
-        <div class="max-w-7xl mx-auto px-4 py-8 flex justify-center items-center">
+        <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col items-center gap-4">
+            <div id="disp-footer-socials" class="flex gap-6 text-xl"></div>
             <p id="disp-footer" class="text-zinc-500 text-sm">© Art Studio. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Modal -->
+    <!-- Artwork Modal (支援真實檔案上傳與編輯) -->
     <div id="artwork-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-zinc-900 border border-zinc-700 rounded-xl w-full max-w-lg p-6 shadow-2xl">
-            <h3 class="text-xl font-bold mb-6">上傳新作品</h3>
+            <h3 id="modal-title" class="text-xl font-bold mb-6">上傳新作品</h3>
             <form id="artwork-form" class="space-y-5">
-                <div><label class="block text-sm font-medium text-zinc-400 mb-1">作品名稱</label><input type="text" id="art-title" required class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
-                <div><label class="block text-sm font-medium text-zinc-400 mb-1">圖片 URL</label><input type="url" id="art-url" required class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div>
-                <div><label class="block text-sm font-medium text-zinc-400 mb-1">分類</label><select id="art-category" required class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></select></div>
+                <input type="hidden" id="edit-art-id">
+                
+                <div>
+                    <label class="block text-sm font-medium text-zinc-400 mb-1">作品名稱</label>
+                    <input type="text" id="art-title" required class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-zinc-400 mb-2">圖片來源</label>
+                    <div class="flex gap-4 mb-3">
+                        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="art-source" value="upload" checked onchange="toggleArtSource()"> 上傳檔案</label>
+                        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="art-source" value="url" onchange="toggleArtSource()"> 貼上網址</label>
+                    </div>
+                    
+                    <div id="art-upload-group">
+                        <input type="file" id="art-file" accept="image/*" class="w-full text-sm text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-zinc-800 file:text-white hover:file:bg-zinc-700 cursor-pointer mb-2">
+                        <div id="art-upload-progress" class="upload-progress"><div id="art-upload-bar" class="upload-progress-bar"></div></div>
+                    </div>
+                    
+                    <div id="art-url-group" class="hidden">
+                        <input type="url" id="art-url" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white" placeholder="https://...">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-zinc-400 mb-1">分類</label>
+                    <select id="art-category" required class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></select>
+                </div>
+                
                 <div class="pt-4 flex justify-end gap-3">
-                    <button type="button" onclick="closeArtworkModal()" class="px-5 py-2.5 rounded border border-zinc-700 hover:bg-zinc-800 text-sm">取消</button>
-                    <button type="submit" class="px-5 py-2.5 rounded bg-white text-black font-bold hover:bg-zinc-200 text-sm">確定上傳</button>
+                    <button type="button" onclick="closeArtworkModal()" class="px-5 py-2.5 rounded border border-zinc-700 hover:bg-zinc-800 text-sm transition">取消</button>
+                    <button type="submit" id="art-submit-btn" class="px-5 py-2.5 rounded bg-theme font-bold text-sm transition">確定儲存</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Firebase SDK (使用您提供的設定) -->
+    <!-- Firebase SDK Scripts -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, addDoc, onSnapshot, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
 
-        // 您的 Firebase 設定
+        // Firebase Config (您的專屬設定)
         const firebaseConfig = {
             apiKey: "AIzaSyBAZgCxSmIORo45wl0ivtC_IY1rED0x92g",
             authDomain: "chim-14306.firebaseapp.com",
             projectId: "chim-14306",
             storageBucket: "chim-14306.firebasestorage.app",
             messagingSenderId: "957582026673",
-            appId: "1:957582026673:web:682e1521ad90988c39ff90",
-            measurementId: "G-JEFP2YGFL1"
+            appId: "1:957582026673:web:682e1521ad90988c39ff90"
         };
 
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const storage = getStorage(app); // 初始化 Storage
 
         const ADMIN_EMAIL = 'chimjo0710@gmail.com';
         let currentUser = null;
@@ -377,13 +439,12 @@
         let submissionsData = [];
         let currentFilter = 'all';
 
-        // 集合參考 (使用標準根目錄)
         const colSettings = collection(db, 'settings');
         const colCategories = collection(db, 'categories');
         const colArtworks = collection(db, 'artworks');
         const colSubmissions = collection(db, 'submissions');
 
-        // UI 輔助
+        // === UI 工具 ===
         const showToast = (msg, type = 'success') => {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -391,6 +452,17 @@
             toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-check' : 'fa-xmark'}"></i> ${msg}`;
             container.appendChild(toast);
             setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 2500);
+        };
+
+        const hexToRgb = (hex) => {
+            let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) } : null;
+        };
+        const getContrastYIQ = (hexcolor) => {
+            let rgb = hexToRgb(hexcolor);
+            if(!rgb) return '#ffffff';
+            let yiq = ((rgb.r*299)+(rgb.g*587)+(rgb.b*114))/1000;
+            return (yiq >= 128) ? '#000000' : '#ffffff';
         };
 
         window.navigate = (viewId) => {
@@ -411,19 +483,67 @@
             document.querySelectorAll('.admin-section').forEach(sec => sec.classList.remove('active'));
             document.getElementById(`sec-${section}`).classList.add('active');
 
-            const titles = { 'global': '全域與導航列設定', 'home': '首頁視覺區塊設定', 'port': '作品集頁面設定', 'class': '畫畫班招生頁面設定', 'contact': '聯絡資訊設定' };
+            const titles = { 'theme':'主題外觀 & SEO', 'global': '導航列與頁尾設定', 'home': '首頁視覺區塊設定', 'port': '作品集頁面設定', 'class': '畫畫班招生頁面設定', 'contact': '聯絡資訊與社群' };
             const titleEl = document.getElementById('admin-section-title');
             if (titles[section]) { titleEl.textContent = titles[section]; titleEl.parentElement.style.display = 'flex'; } 
             else { titleEl.parentElement.style.display = 'none'; }
         };
 
-        // 登入邏輯
+        window.toggleArtSource = () => {
+            const val = document.querySelector('input[name="art-source"]:checked').value;
+            if(val === 'upload') {
+                document.getElementById('art-upload-group').classList.remove('hidden');
+                document.getElementById('art-url-group').classList.add('hidden');
+            } else {
+                document.getElementById('art-upload-group').classList.add('hidden');
+                document.getElementById('art-url-group').classList.remove('hidden');
+            }
+        };
+
+        // === 檔案上傳模組 ===
+        const uploadFileToStorage = (file, path, progressBarId) => {
+            return new Promise((resolve, reject) => {
+                const storageRef = ref(storage, path);
+                const uploadTask = uploadBytesResumable(storageRef, file);
+                
+                const progressContainer = document.getElementById(progressBarId).parentElement;
+                const progressBar = document.getElementById(progressBarId);
+                progressContainer.style.display = 'block';
+
+                uploadTask.on('state_changed', 
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        progressBar.style.width = progress + '%';
+                    }, 
+                    (error) => { progressContainer.style.display = 'none'; reject(error); }, 
+                    async () => {
+                        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                        setTimeout(() => { progressContainer.style.display = 'none'; progressBar.style.width = '0%'; }, 1000);
+                        resolve(downloadURL);
+                    }
+                );
+            });
+        };
+
+        // 首頁背景上傳
+        window.handleHeroUpload = async () => {
+            const fileInput = document.getElementById('upload-hero-bg');
+            if(!fileInput.files[0]) return showToast("請先選擇圖片", "error");
+            try {
+                const url = await uploadFileToStorage(fileInput.files[0], `site_assets/hero_bg_${Date.now()}`, 'hero-progress-bar');
+                document.getElementById('set-hero-bg').value = url;
+                document.getElementById('preview-hero-bg').src = url;
+                showToast("背景圖上傳成功，請記得點擊右上方儲存變更！");
+            } catch (e) { showToast("上傳失敗", "error"); console.error(e); }
+        };
+
+        // === 權限與登入 ===
         document.getElementById('auth-btn').addEventListener('click', async () => {
             if (currentUser && currentUser.email === ADMIN_EMAIL) {
                 await signOut(auth); showToast("已退出管理模式"); await signInAnonymously(auth);
             } else {
                 try { await signInWithPopup(auth, new GoogleAuthProvider()); } 
-                catch (error) { showToast("登入失敗或被攔截", "error"); console.error(error); }
+                catch (error) { showToast("登入失敗", "error"); }
             }
         });
         document.getElementById('admin-nav-btn').addEventListener('click', () => navigate('admin'));
@@ -442,10 +562,9 @@
             if (user) setupPublicListeners();
         });
 
-        // 匿名登入供一般訪客使用 (寫入表單需要)
-        signInAnonymously(auth).catch(err => console.log("Anonymous Auth err:", err));
+        signInAnonymously(auth).catch(e => console.log(e));
 
-        // 載入資料
+        // === 資料監聽與渲染 ===
         let publicListenersSetup = false;
         const setupPublicListeners = () => {
             if (!currentUser || publicListenersSetup) return;
@@ -453,149 +572,148 @@
 
             onSnapshot(doc(colSettings, 'site_config'), (snapshot) => {
                 const def = {
-                    logo: 'ART STUDIO', metaTitle: '現代藝術家 | 官方網站',
-                    navHome: '首頁', navPort: '作品集', navClass: '畫畫班', navContact: '聯絡我們',
-                    footer: '© 2026 Art Studio. All rights reserved.',
-                    heroTitle: '探索藝術的邊界', heroSub: '以色彩與線條，捕捉靈魂的瞬間。歡迎來到我的數位藝廊。',
-                    heroBg: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=2071&auto=format&fit=crop',
-                    heroBtn1: '觀看作品', heroBtn2: '報名畫畫班',
+                    themeColor: '#ffffff', metaDesc: '探索藝術的邊界...',
+                    logo: 'ART STUDIO', metaTitle: '現代藝術家 | 官方網站', navHome: '首頁', navPort: '作品集', navClass: '畫畫班', navContact: '聯絡我們', footer: '© 2026 Art Studio. All rights reserved.',
+                    heroTitle: '探索藝術的邊界', heroSub: '以色彩與線條，捕捉靈魂的瞬間。歡迎來到我的數位藝廊。', heroBg: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=2071&auto=format&fit=crop', heroBtn1: '觀看作品', heroBtn2: '報名畫畫班',
                     portTitle: 'Selected Works', portSub: '精選歷年創作，探索不同媒材與主題的視覺語言。',
                     classTitle: '專業畫畫班招生', classDesc: '請填寫下方表單，我們將盡快與您聯絡確認名額。',
                     contactTitle: '聯絡資訊', contactDesc: '歡迎透過表單或以下方式與我聯絡。',
-                    email: ADMIN_EMAIL, phone: '暫未提供', address: '預約制開放', ig: '@artstudio'
+                    email: ADMIN_EMAIL, phone: '暫未提供', address: '預約制開放',
+                    socialIg: '', socialFb: '', socialYt: '', socialX: ''
                 };
                 const data = snapshot.exists() ? { ...def, ...snapshot.data() } : def;
 
+                // 應用主題色與 SEO
+                document.documentElement.style.setProperty('--theme-color', data.themeColor);
+                document.documentElement.style.setProperty('--theme-text', getContrastYIQ(data.themeColor));
+                document.getElementById('meta-desc').content = data.metaDesc;
+                document.getElementById('meta-title').textContent = data.metaTitle;
+
+                // 前端文字
                 const map = {
-                    'disp-logo': data.logo, 'meta-title': data.metaTitle,
-                    'disp-nav-home': data.navHome, 'disp-nav-port': data.navPort, 'disp-nav-class': data.navClass, 'disp-nav-contact': data.navContact,
+                    'disp-logo': data.logo, 'disp-nav-home': data.navHome, 'disp-nav-port': data.navPort, 'disp-nav-class': data.navClass, 'disp-nav-contact': data.navContact,
                     'disp-mob-home': data.navHome, 'disp-mob-port': data.navPort, 'disp-mob-class': data.navClass, 'disp-mob-contact': data.navContact,
                     'disp-footer': data.footer, 'disp-hero-title': data.heroTitle, 'disp-hero-sub': data.heroSub, 'disp-hero-btn1': data.heroBtn1, 'disp-hero-btn2': data.heroBtn2,
                     'disp-port-title': data.portTitle, 'disp-port-sub': data.portSub, 'disp-class-title': data.classTitle, 'disp-class-desc': data.classDesc,
-                    'disp-contact-title': data.contactTitle, 'disp-contact-desc': data.contactDesc, 'disp-info-email': data.email, 'disp-info-phone': data.phone, 'disp-info-address': data.address, 'disp-info-ig': data.ig
+                    'disp-contact-title': data.contactTitle, 'disp-contact-desc': data.contactDesc
                 };
-
-                for (const [id, val] of Object.entries(map)) {
-                    const el = document.getElementById(id);
-                    if (el) el.textContent = val;
-                }
+                for (const [id, val] of Object.entries(map)) { const el = document.getElementById(id); if (el) el.textContent = val; }
                 document.getElementById('disp-hero-bg').src = data.heroBg;
 
+                // 渲染聯絡區塊與社群
+                const cInfo = document.getElementById('disp-contact-info-container');
+                let infoHtml = '';
+                if(data.email) infoHtml += `<div class="flex items-center gap-4 text-zinc-300"><div class="w-12 h-12 bg-zinc-950 rounded flex items-center justify-center border border-zinc-800"><i class="fa-solid fa-envelope text-theme"></i></div><div><p class="text-xs text-zinc-500 mb-1">電子郵件</p><span class="font-medium">${data.email}</span></div></div>`;
+                if(data.phone) infoHtml += `<div class="flex items-center gap-4 text-zinc-300"><div class="w-12 h-12 bg-zinc-950 rounded flex items-center justify-center border border-zinc-800"><i class="fa-solid fa-phone text-theme"></i></div><div><p class="text-xs text-zinc-500 mb-1">聯絡電話</p><span class="font-medium">${data.phone}</span></div></div>`;
+                if(data.address) infoHtml += `<div class="flex items-center gap-4 text-zinc-300"><div class="w-12 h-12 bg-zinc-950 rounded flex items-center justify-center border border-zinc-800"><i class="fa-solid fa-location-dot text-theme"></i></div><div><p class="text-xs text-zinc-500 mb-1">工作室地址</p><span class="font-medium">${data.address}</span></div></div>`;
+                cInfo.innerHTML = infoHtml;
+
+                const fSocials = document.getElementById('disp-footer-socials');
+                let sHtml = '';
+                if(data.socialIg) sHtml += `<a href="${data.socialIg}" target="_blank" class="text-zinc-500 hover-text-theme transition"><i class="fa-brands fa-instagram"></i></a>`;
+                if(data.socialFb) sHtml += `<a href="${data.socialFb}" target="_blank" class="text-zinc-500 hover-text-theme transition"><i class="fa-brands fa-facebook"></i></a>`;
+                if(data.socialYt) sHtml += `<a href="${data.socialYt}" target="_blank" class="text-zinc-500 hover-text-theme transition"><i class="fa-brands fa-youtube"></i></a>`;
+                if(data.socialX) sHtml += `<a href="${data.socialX}" target="_blank" class="text-zinc-500 hover-text-theme transition"><i class="fa-brands fa-x-twitter"></i></a>`;
+                fSocials.innerHTML = sHtml;
+
+                // 填入後台表單
                 const formMap = {
+                    'set-theme-color': data.themeColor, 'set-meta-desc': data.metaDesc,
                     'set-logo': data.logo, 'set-meta-title': data.metaTitle, 'set-nav-home': data.navHome, 'set-nav-port': data.navPort, 'set-nav-class': data.navClass, 'set-nav-contact': data.navContact,
                     'set-footer': data.footer, 'set-hero-title': data.heroTitle, 'set-hero-sub': data.heroSub, 'set-hero-bg': data.heroBg, 'set-hero-btn1': data.heroBtn1, 'set-hero-btn2': data.heroBtn2,
                     'set-port-title': data.portTitle, 'set-port-sub': data.portSub, 'set-class-title': data.classTitle, 'set-class-desc': data.classDesc,
-                    'set-contact-title': data.contactTitle, 'set-contact-desc': data.contactDesc, 'set-info-email': data.email, 'set-info-phone': data.phone, 'set-info-address': data.address, 'set-info-ig': data.ig
+                    'set-contact-title': data.contactTitle, 'set-contact-desc': data.contactDesc,
+                    'set-info-email': data.email, 'set-info-phone': data.phone, 'set-info-address': data.address,
+                    'set-social-ig': data.socialIg, 'set-social-fb': data.socialFb, 'set-social-yt': data.socialYt, 'set-social-x': data.socialX
                 };
-                for (const [id, val] of Object.entries(formMap)) {
-                    const el = document.getElementById(id);
-                    if (el) el.value = val;
-                }
+                for (const [id, val] of Object.entries(formMap)) { const el = document.getElementById(id); if (el) el.value = val; }
+                document.getElementById('preview-hero-bg').src = data.heroBg;
 
-                if (!snapshot.exists() && currentUser.email === ADMIN_EMAIL) {
-                    setDoc(doc(colSettings, 'site_config'), def);
-                }
+                if (!snapshot.exists() && currentUser.email === ADMIN_EMAIL) setDoc(doc(colSettings, 'site_config'), def);
             });
 
             onSnapshot(colCategories, (snapshot) => {
-                categoriesData = [];
-                snapshot.forEach(doc => categoriesData.push({ id: doc.id, ...doc.data() }));
+                categoriesData = []; snapshot.forEach(doc => categoriesData.push({ id: doc.id, ...doc.data() }));
                 renderCategories();
             });
 
             onSnapshot(colArtworks, (snapshot) => {
-                artworksData = [];
-                snapshot.forEach(doc => artworksData.push({ id: doc.id, ...doc.data() }));
+                artworksData = []; snapshot.forEach(doc => artworksData.push({ id: doc.id, ...doc.data() }));
                 artworksData.sort((a, b) => (b.timestamp?.toMillis() || 0) - (a.timestamp?.toMillis() || 0));
                 if(!document.getElementById('view-portfolio').classList.contains('hidden')) renderPortfolio();
                 if(!document.getElementById('view-admin').classList.contains('hidden')) renderAdminArtworks();
             });
         };
 
-        // 管理員特有監聽
         let adminListenersSetup = false;
         const setupAdminListeners = () => {
             if (!currentUser || currentUser.email !== ADMIN_EMAIL || adminListenersSetup) return;
             adminListenersSetup = true;
-
             onSnapshot(colSubmissions, (snapshot) => {
                 submissionsData = []; let newCount = 0;
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    submissionsData.push({ id: doc.id, ...data });
-                    if(data.status === 'pending') newCount++;
-                });
+                snapshot.forEach(doc => { const data = doc.data(); submissionsData.push({ id: doc.id, ...data }); if(data.status === 'pending') newCount++; });
                 submissionsData.sort((a, b) => (b.timestamp?.toMillis() || 0) - (a.timestamp?.toMillis() || 0));
-                
                 const badge = document.getElementById('new-badge');
-                if(newCount > 0) { badge.textContent = `新 ${newCount}`; badge.classList.remove('hidden'); } 
-                else { badge.classList.add('hidden'); }
+                if(newCount > 0) { badge.textContent = `新 ${newCount}`; badge.classList.remove('hidden'); } else badge.classList.add('hidden');
                 renderSubmissions();
             });
         };
 
-        // 保存設定
+        // === 儲存設定 ===
         document.getElementById('master-settings-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if(!currentUser) return;
-            const btn = document.getElementById('save-settings-btn');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 儲存中...';
+            e.preventDefault(); if(!currentUser) return;
+            const btn = document.getElementById('save-settings-btn'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 儲存中...';
             
             const newData = {
-                logo: document.getElementById('set-logo').value, metaTitle: document.getElementById('set-meta-title').value,
-                navHome: document.getElementById('set-nav-home').value, navPort: document.getElementById('set-nav-port').value, navClass: document.getElementById('set-nav-class').value, navContact: document.getElementById('set-nav-contact').value,
-                footer: document.getElementById('set-footer').value, heroTitle: document.getElementById('set-hero-title').value, heroSub: document.getElementById('set-hero-sub').value,
-                heroBg: document.getElementById('set-hero-bg').value, heroBtn1: document.getElementById('set-hero-btn1').value, heroBtn2: document.getElementById('set-hero-btn2').value,
-                portTitle: document.getElementById('set-port-title').value, portSub: document.getElementById('set-port-sub').value,
-                classTitle: document.getElementById('set-class-title').value, classDesc: document.getElementById('set-class-desc').value,
-                contactTitle: document.getElementById('set-contact-title').value, contactDesc: document.getElementById('set-contact-desc').value,
-                email: document.getElementById('set-info-email').value, phone: document.getElementById('set-info-phone').value, address: document.getElementById('set-info-address').value, ig: document.getElementById('set-info-ig').value,
+                themeColor: document.getElementById('set-theme-color').value, metaDesc: document.getElementById('set-meta-desc').value,
+                logo: document.getElementById('set-logo').value, metaTitle: document.getElementById('set-meta-title').value, navHome: document.getElementById('set-nav-home').value, navPort: document.getElementById('set-nav-port').value, navClass: document.getElementById('set-nav-class').value, navContact: document.getElementById('set-nav-contact').value,
+                footer: document.getElementById('set-footer').value, heroTitle: document.getElementById('set-hero-title').value, heroSub: document.getElementById('set-hero-sub').value, heroBg: document.getElementById('set-hero-bg').value, heroBtn1: document.getElementById('set-hero-btn1').value, heroBtn2: document.getElementById('set-hero-btn2').value,
+                portTitle: document.getElementById('set-port-title').value, portSub: document.getElementById('set-port-sub').value, classTitle: document.getElementById('set-class-title').value, classDesc: document.getElementById('set-class-desc').value,
+                contactTitle: document.getElementById('set-contact-title').value, contactDesc: document.getElementById('set-contact-desc').value, email: document.getElementById('set-info-email').value, phone: document.getElementById('set-info-phone').value, address: document.getElementById('set-info-address').value,
+                socialIg: document.getElementById('set-social-ig').value, socialFb: document.getElementById('set-social-fb').value, socialYt: document.getElementById('set-social-yt').value, socialX: document.getElementById('set-social-x').value,
                 updatedAt: serverTimestamp()
             };
-
-            try { await setDoc(doc(colSettings, 'site_config'), newData, { merge: true }); showToast("全站設定已更新！"); } 
-            catch (err) { showToast("儲存失敗", "error"); console.error(err);} 
-            finally { btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> 儲存所有文字變更'; }
+            try { await setDoc(doc(colSettings, 'site_config'), newData, { merge: true }); showToast("設定已全面更新！"); } 
+            catch (err) { showToast("儲存失敗", "error"); console.error(err); } 
+            finally { btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> 儲存所有設定變更'; }
         });
 
-        // 渲染作品集
+        // === 渲染作品集 ===
         const renderCategories = () => {
             const filterContainer = document.getElementById('portfolio-filters');
             const selectContainer = document.getElementById('art-category');
             const adminList = document.getElementById('admin-categories-list');
             
-            filterContainer.innerHTML = `<button class="${currentFilter === 'all' ? 'bg-white text-black' : 'bg-transparent text-zinc-400 border border-zinc-700'} px-5 py-2 rounded-full text-sm hover:bg-zinc-200 hover:text-black transition" onclick="setFilter('all')">全部作品</button>`;
+            filterContainer.innerHTML = `<button class="${currentFilter === 'all' ? 'bg-theme shadow-md' : 'bg-transparent text-zinc-400 border border-zinc-700 hover:text-white'} px-5 py-2 rounded-full text-sm transition" onclick="setFilter('all')">全部作品</button>`;
             selectContainer.innerHTML = ''; adminList.innerHTML = '';
 
             categoriesData.forEach(cat => {
-                filterContainer.innerHTML += `<button class="${currentFilter === cat.id ? 'bg-white text-black' : 'bg-transparent text-zinc-400 border border-zinc-700'} px-5 py-2 rounded-full text-sm hover:bg-zinc-200 hover:text-black transition" onclick="setFilter('${cat.id}')">${cat.name}</button>`;
+                filterContainer.innerHTML += `<button class="${currentFilter === cat.id ? 'bg-theme shadow-md' : 'bg-transparent text-zinc-400 border border-zinc-700 hover:text-white'} px-5 py-2 rounded-full text-sm transition" onclick="setFilter('${cat.id}')">${cat.name}</button>`;
                 selectContainer.innerHTML += `<option value="${cat.id}">${cat.name}</option>`;
                 adminList.innerHTML += `<div class="flex items-center gap-2 bg-zinc-900 border border-zinc-700 px-3 py-1.5 rounded text-sm"><span class="text-zinc-300">${cat.name}</span><button onclick="deleteCategory('${cat.id}')" class="text-red-500 hover:text-red-400 ml-2"><i class="fa-solid fa-xmark"></i></button></div>`;
             });
         };
-
         window.setFilter = (id) => { currentFilter = id; renderCategories(); renderPortfolio(); };
 
         const renderPortfolio = () => {
-            const grid = document.getElementById('portfolio-grid');
-            grid.innerHTML = '';
+            const grid = document.getElementById('portfolio-grid'); grid.innerHTML = '';
             const filtered = currentFilter === 'all' ? artworksData : artworksData.filter(a => a.categoryId === currentFilter);
-            if(filtered.length === 0) { grid.innerHTML = `<div class="col-span-full text-center py-20 text-zinc-600">目前沒有作品</div>`; return; }
+            if(filtered.length === 0) return grid.innerHTML = `<div class="col-span-full text-center py-20 text-zinc-600">目前沒有作品</div>`;
 
             filtered.forEach(art => {
                 const catName = categoriesData.find(c => c.id === art.categoryId)?.name || '';
                 grid.innerHTML += `
                     <div class="masonry-item relative group rounded-xl overflow-hidden bg-zinc-900 border border-zinc-800">
-                        <img src="${art.url}" alt="${art.title}" class="w-full h-auto object-cover group-hover:scale-105 transition duration-700" onerror="this.src='https://via.placeholder.com/600x800?text=Error'">
+                        <img src="${art.url}" alt="${art.title}" class="w-full h-auto object-cover group-hover:scale-105 transition duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-6">
                             <h3 class="text-xl font-bold text-white mb-1">${art.title}</h3>
-                            <span class="text-xs tracking-wider text-zinc-400 uppercase">${catName}</span>
+                            <span class="text-xs tracking-wider text-theme uppercase">${catName}</span>
                         </div>
                     </div>`;
             });
         };
 
-        // 管理員新增與刪除
+        // === 作品庫管理 (包含上傳與編輯) ===
         document.getElementById('add-category-form').addEventListener('submit', async (e) => {
             e.preventDefault(); if(!currentUser) return;
             const input = document.getElementById('new-category-name');
@@ -605,36 +723,78 @@
         });
         window.deleteCategory = async (id) => { if(confirm("確定刪除此分類？")) await deleteDoc(doc(colCategories, id)); };
 
-        window.openArtworkModal = () => {
+        window.openArtworkModal = (id = null) => {
             if(categoriesData.length===0) return showToast("請先新增一個分類", "error");
-            document.getElementById('artwork-form').reset(); document.getElementById('artwork-modal').classList.remove('hidden');
+            document.getElementById('artwork-form').reset();
+            document.getElementById('edit-art-id').value = id || '';
+            document.getElementById('modal-title').textContent = id ? '編輯作品' : '上傳新作品';
+            
+            // 如果是編輯，填入舊資料並強迫使用 URL 模式(避免複雜邏輯，通常只改標題/分類)
+            if(id) {
+                const art = artworksData.find(a => a.id === id);
+                document.getElementById('art-title').value = art.title;
+                document.getElementById('art-category').value = art.categoryId;
+                document.querySelector('input[value="url"]').checked = true;
+                document.getElementById('art-url').value = art.url;
+                toggleArtSource();
+            } else {
+                document.querySelector('input[value="upload"]').checked = true;
+                toggleArtSource();
+            }
+            document.getElementById('artwork-modal').classList.remove('hidden');
         };
         window.closeArtworkModal = () => document.getElementById('artwork-modal').classList.add('hidden');
 
         document.getElementById('artwork-form').addEventListener('submit', async (e) => {
             e.preventDefault(); if(!currentUser) return;
-            await addDoc(colArtworks, {
-                title: document.getElementById('art-title').value, url: document.getElementById('art-url').value,
-                categoryId: document.getElementById('art-category').value, timestamp: serverTimestamp()
-            });
-            closeArtworkModal(); showToast("作品上傳成功");
+            const btn = document.getElementById('art-submit-btn'); btn.disabled = true; btn.textContent = "處理中...";
+            
+            try {
+                const editId = document.getElementById('edit-art-id').value;
+                const title = document.getElementById('art-title').value;
+                const categoryId = document.getElementById('art-category').value;
+                let url = '';
+
+                const source = document.querySelector('input[name="art-source"]:checked').value;
+                if(source === 'upload') {
+                    const fileInput = document.getElementById('art-file');
+                    if(!fileInput.files[0]) throw new Error("請選擇圖片檔案");
+                    url = await uploadFileToStorage(fileInput.files[0], `artworks/${Date.now()}_${fileInput.files[0].name}`, 'art-upload-bar');
+                } else {
+                    url = document.getElementById('art-url').value;
+                    if(!url) throw new Error("請輸入圖片網址");
+                }
+
+                if(editId) {
+                    await updateDoc(doc(colArtworks, editId), { title, url, categoryId });
+                    showToast("作品更新成功");
+                } else {
+                    await addDoc(colArtworks, { title, url, categoryId, timestamp: serverTimestamp() });
+                    showToast("作品新增成功");
+                }
+                closeArtworkModal();
+            } catch (err) { showToast(err.message || "處理失敗", "error"); } 
+            finally { btn.disabled = false; btn.textContent = "確定儲存"; }
         });
 
         const renderAdminArtworks = () => {
-            const list = document.getElementById('admin-artworks-list');
-            list.innerHTML = '';
+            const list = document.getElementById('admin-artworks-list'); list.innerHTML = '';
             artworksData.forEach(art => {
                 const catName = categoriesData.find(c => c.id === art.categoryId)?.name || '';
                 list.innerHTML += `
                     <tr class="border-b border-zinc-800/50 hover:bg-zinc-800/30">
-                        <td class="py-3 px-4"><img src="${art.url}" class="w-10 h-10 object-cover rounded bg-zinc-800"></td>
+                        <td class="py-3 px-4"><img src="${art.url}" class="w-10 h-10 object-cover rounded bg-zinc-800 border border-zinc-700"></td>
                         <td class="py-3 px-4 font-bold text-zinc-200">${art.title}</td>
                         <td class="py-3 px-4 text-zinc-400">${catName}</td>
-                        <td class="py-3 px-4 text-right"><button onclick="deleteDoc(doc(colArtworks, '${art.id}')); showToast('已刪除');" class="text-red-500 hover:text-white hover:bg-red-500 px-3 py-1 rounded transition">刪除</button></td>
+                        <td class="py-3 px-4 text-right">
+                            <button onclick="openArtworkModal('${art.id}')" class="text-blue-400 hover:text-white px-3 py-1 rounded transition mr-2"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="if(confirm('確定刪除？')) deleteDoc(doc(colArtworks, '${art.id}'));" class="text-red-500 hover:text-white hover:bg-red-500 px-3 py-1 rounded transition"><i class="fa-solid fa-trash"></i></button>
+                        </td>
                     </tr>`;
             });
         };
 
+        // === 表單管理 ===
         window.renderSubmissions = () => {
             const list = document.getElementById('admin-submissions-list');
             const typeFilter = document.getElementById('filter-sub-type').value;
@@ -664,24 +824,19 @@
                         <div class="mt-4 flex gap-2 justify-end">
                             ${sub.status !== 'pending' ? `<button onclick="updateStatus('${sub.id}', 'pending')" class="text-xs px-3 py-1.5 rounded border border-zinc-700 hover:bg-zinc-800 text-zinc-400">轉回待處理</button>` : ''}
                             ${sub.status !== 'contacted' ? `<button onclick="updateStatus('${sub.id}', 'contacted')" class="text-xs px-3 py-1.5 rounded border border-blue-900 text-blue-400 hover:bg-blue-950">標記處理中</button>` : ''}
-                            ${sub.status !== 'resolved' ? `<button onclick="updateStatus('${sub.id}', 'resolved')" class="text-xs px-3 py-1.5 rounded bg-white text-black font-bold hover:bg-zinc-300">完成結案</button>` : ''}
+                            ${sub.status !== 'resolved' ? `<button onclick="updateStatus('${sub.id}', 'resolved')" class="text-xs px-3 py-1.5 rounded bg-zinc-700 text-white font-bold hover:bg-zinc-600">完成結案</button>` : ''}
                         </div>
                     </div>`;
             });
         };
-
         window.updateStatus = async (id, status) => { await updateDoc(doc(colSubmissions, id), { status }); };
 
-        // 提交表單
         const submitForm = async (type, formId, data) => {
             const btn = document.querySelector(`#${formId} button`); btn.disabled = true; btn.textContent = "發送中...";
-            try {
-                await addDoc(colSubmissions, { type, ...data, status: 'pending', timestamp: serverTimestamp() });
-                document.getElementById(formId).reset(); showToast("已成功送出！");
-            } catch (err) { showToast("發送失敗", "error"); console.error(err); } 
+            try { await addDoc(colSubmissions, { type, ...data, status: 'pending', timestamp: serverTimestamp() }); document.getElementById(formId).reset(); showToast("已成功送出！"); } 
+            catch (err) { showToast("發送失敗", "error"); console.error(err); } 
             finally { btn.disabled = false; btn.textContent = type==='class'?"送出報名資料":"發送訊息"; }
         };
-
         document.getElementById('class-form').addEventListener('submit', e => { e.preventDefault(); submitForm('class', 'class-form', { name: document.getElementById('class-name').value, phone: document.getElementById('class-phone').value, email: document.getElementById('class-email').value, message: document.getElementById('class-message').value }); });
         document.getElementById('contact-form').addEventListener('submit', e => { e.preventDefault(); submitForm('contact', 'contact-form', { name: document.getElementById('contact-name').value, email: document.getElementById('contact-email').value, message: document.getElementById('contact-message').value }); });
 
