@@ -45,6 +45,7 @@ select { -webkit-appearance: none; -moz-appearance: none; appearance: none; back
 
 <footer class="bg-zinc-50 border-t border-zinc-200 mt-auto py-12"><div class="max-w-7xl mx-auto px-6 flex flex-col items-center gap-6"><div id="disp-footer-socials" class="flex gap-8 text-xl text-zinc-400"></div><p id="disp-footer" class="text-zinc-400 text-xs tracking-widest uppercase">© Art Studio.</p></div></footer>
 
+<!-- Admin Data Modal -->
 <div id="data-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
 <div class="bg-zinc-900 border border-zinc-800 rounded-lg w-full max-w-lg p-6 shadow-2xl text-zinc-300 my-auto mt-20 md:mt-auto">
 <div class="flex justify-between items-center mb-6 border-b border-zinc-800 pb-3"><h3 id="modal-title" class="text-lg font-bold text-white">新增資料</h3><button onclick="closeModal()" class="text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button></div>
@@ -56,6 +57,12 @@ select { -webkit-appearance: none; -moz-appearance: none; appearance: none; back
 <div id="field-content" class="hidden"><label class="block text-xs text-zinc-400 mb-1">內容 / 詳細描述 (支援多段落換行)</label><textarea id="input-content" rows="8" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white text-sm leading-relaxed focus:outline-none focus:border-zinc-500"></textarea></div>
 <div class="pt-2 flex justify-end gap-3"><button type="button" onclick="closeModal()" class="px-5 py-2.5 rounded border border-zinc-700 text-xs hover:bg-zinc-800 transition">取消</button><button type="submit" id="modal-submit-btn" class="px-5 py-2.5 rounded bg-white text-black font-bold text-xs hover:bg-zinc-200 transition">確定儲存</button></div>
 </form></div></div>
+
+<!-- Image Viewer Modal (Lightbox) -->
+<div id="image-lightbox" class="fixed inset-0 z-[100] hidden bg-black/95 flex flex-col items-center justify-center opacity-0 transition-opacity duration-300" onclick="closeLightbox()">
+    <button class="absolute top-6 right-6 text-white text-4xl hover:text-zinc-400 transition cursor-pointer" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></button>
+    <img id="lightbox-img" src="" class="max-w-[95vw] max-h-[90vh] object-contain transform scale-95 transition-transform duration-300 shadow-2xl cursor-default" onclick="event.stopPropagation()">
+</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -77,6 +84,32 @@ window.navigate = (viewId) => { document.querySelectorAll('.view-section').forEa
 window.toggleMobileMenu = () => document.getElementById('mobile-menu').classList.toggle('hidden');
 window.switchAdminMenu = (sec) => { document.querySelectorAll('.admin-menu-btn').forEach(btn => btn.classList.remove('admin-menu-active')); document.getElementById(`menu-${sec}`).classList.add('admin-menu-active'); document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active')); document.getElementById(`sec-${sec}`).classList.add('active'); const titles = { 'theme':'主題外觀 & SEO', 'global': '導航列與頁尾設定', 'home': '首頁 (Hero) 視覺', 'port': '區塊標題與副標題', 'class': '畫畫班設定', 'contact': '聯絡資訊' }; const titleEl = document.getElementById('admin-section-title'); if (titles[sec]) { titleEl.textContent = titles[sec]; titleEl.parentElement.style.display = 'flex'; } else { titleEl.parentElement.style.display = 'none'; } };
 
+// --- Lightbox Functions ---
+window.openLightbox = (url) => {
+    const lb = document.getElementById('image-lightbox');
+    const img = document.getElementById('lightbox-img');
+    img.src = url;
+    lb.classList.remove('hidden');
+    // small delay to allow display:block to apply before animating opacity
+    setTimeout(() => {
+        lb.classList.remove('opacity-0');
+        img.classList.remove('scale-95');
+        img.classList.add('scale-100');
+    }, 10);
+};
+window.closeLightbox = () => {
+    const lb = document.getElementById('image-lightbox');
+    const img = document.getElementById('lightbox-img');
+    lb.classList.add('opacity-0');
+    img.classList.remove('scale-100');
+    img.classList.add('scale-95');
+    // wait for transition to finish before hiding
+    setTimeout(() => {
+        lb.classList.add('hidden');
+        img.src = '';
+    }, 300);
+};
+
 const uploadToImgur = async (file) => { const fd = new FormData(); fd.append('image', file); try { const r = await fetch('https://api.imgur.com/3/image', { method: 'POST', headers: { 'Authorization': `Client-ID ${IMGUR_CLIENT_ID}` }, body: fd }); const d = await r.json(); if(d.success) return d.data.link; throw new Error("API Reject"); } catch(e) { throw new Error("上傳失敗"); } };
 window.handleHeroUpload = async () => { const f = document.getElementById('upload-hero-bg'); if(!f.files[0]) return; const b = document.getElementById('btn-hero-upload'); b.innerHTML = '<span class="spinner"></span>'; b.disabled = true; try { const url = await uploadToImgur(f.files[0]); document.getElementById('set-hero-bg').value = url; document.getElementById('preview-hero-bg').src = url; showToast("上傳成功"); } catch(e){ showToast(e.message, "error"); } finally { b.innerHTML = '上傳至圖床'; b.disabled = false; } };
 window.handleModalUpload = async () => { const f = document.getElementById('input-file'); if(!f.files[0]) return; const b = document.getElementById('btn-modal-upload'); b.innerHTML = '<span class="spinner"></span>'; b.disabled = true; try { const url = await uploadToImgur(f.files[0]); document.getElementById('input-url').value = url; showToast("上傳成功"); } catch(e){ showToast(e.message, "error"); } finally { b.innerHTML = '上傳至圖床'; b.disabled = false; } };
@@ -94,11 +127,11 @@ const setupPublicListeners = () => {
         const d = snap.exists() ? { ...def, ...snap.data() } : def;
         document.documentElement.style.setProperty('--theme-color', d.themeColor); document.documentElement.style.setProperty('--theme-text', getContrastYIQ(d.themeColor));
         document.getElementById('meta-desc').content = d.metaDesc; document.getElementById('meta-title').textContent = d.metaTitle;
-        const m = { 'disp-logo': d.logo, 'disp-nav-home': d.navHome, 'disp-nav-port': d.navPort, 'disp-nav-thoughts': d.navThoughts, 'disp-nav-other': d.navOther, 'disp-nav-class': d.navClass, 'disp-nav-contact': d.navContact, 'disp-mob-home-mobile': d.navHome, 'disp-mob-port-mobile': d.navPort, 'disp-mob-thoughts-mobile': d.navThoughts, 'disp-mob-other-mobile': d.navOther, 'disp-mob-class-mobile': d.navClass, 'disp-mob-contact-mobile': d.navContact, 'disp-footer': d.footer, 'disp-hero-title': d.heroTitle, 'disp-hero-sub': d.heroSub, 'disp-hero-btn1': d.heroBtn1, 'disp-hero-btn2': d.heroBtn2, 'disp-port-title': d.portTitle, 'disp-port-sub': d.portSub, 'disp-thoughts-title': d.thoughtsTitle, 'disp-thoughts-sub': d.thoughtsSub, 'disp-other-title': d.otherTitle, 'disp-other-sub': d.otherSub, 'disp-class-title': d.classTitle, 'disp-class-desc': d.classDesc, 'disp-class-extra': d.classExtra, 'disp-contact-title': d.contactTitle, 'disp-contact-desc': d.contactDesc };
+        const m = { 'disp-logo': d.logo, 'disp-nav-home': d.navHome, 'disp-nav-port': d.navPort, 'disp-nav-thoughts': d.navThoughts, 'disp-nav-other': d.navOther, 'disp-nav-class': d.navClass, 'disp-nav-contact': d.navContact, 'disp-mob-home-mobile': d.navHome, 'disp-mob-port-mobile': d.navPort, 'disp-mob-thoughts-mobile': d.navThoughts, 'disp-mob-other-mobile': d.navOther, 'disp-mob-class-mobile': d.navClass, 'disp-mob-contact-mobile': d.navContact, 'disp-footer': d.footer, 'disp-hero-title': d.heroTitle, 'disp-hero-sub': d.heroSub, 'disp-hero-btn1': d.heroBtn1, 'disp-hero-btn2': d.heroBtn2, 'disp-port-title': d.portTitle, 'disp-port-sub': d.portSub, 'disp-thoughts-title': d.thoughtsTitle, 'disp-thoughts-sub': d.thoughtsSub, 'disp-other-title': d.otherTitle, 'disp-other-sub': d.otherSub, 'disp-class-title': d.classTitle, 'disp-class-desc': d.classDesc, 'disp-contact-title': d.contactTitle, 'disp-contact-desc': d.contactDesc };
         for (const [k, v] of Object.entries(m)) { const el = document.getElementById(k); if(el) el.textContent = v; } document.getElementById('disp-hero-bg').src = d.heroBg;
         
         const tsSelect = document.getElementById('class-timeslot'); if(tsSelect && d.classTimeSlots) { tsSelect.innerHTML = '<option value="" disabled selected>Select a time</option>' + d.classTimeSlots.split(',').map(s => `<option value="${s.trim()}">${s.trim()}</option>`).join(''); }
-        const extraBox = document.getElementById('disp-class-extra'); if(d.classExtra && d.classExtra.trim() !== '') { extraBox.style.display = 'inline-block'; } else { extraBox.style.display = 'none'; }
+        const extraBox = document.getElementById('disp-class-extra'); if(d.classExtra && d.classExtra.trim() !== '') { extraBox.textContent = d.classExtra; extraBox.style.display = 'inline-block'; } else { extraBox.style.display = 'none'; }
         let iHtml = ''; if(d.email) iHtml += `<div><p class="text-xs uppercase tracking-widest text-zinc-400 mb-1">Email</p><p class="text-zinc-900">${d.email}</p></div>`; if(d.phone) iHtml += `<div><p class="text-xs uppercase tracking-widest text-zinc-400 mb-1">Phone</p><p class="text-zinc-900">${d.phone}</p></div>`; if(d.address) iHtml += `<div><p class="text-xs uppercase tracking-widest text-zinc-400 mb-1">Address</p><p class="text-zinc-900">${d.address}</p></div>`; document.getElementById('disp-contact-info-container').innerHTML = iHtml;
         let sHtml = ''; if(d.socialIg) sHtml += `<a href="${d.socialIg}" target="_blank" class="hover:text-black transition"><i class="fa-brands fa-instagram"></i></a>`; if(d.socialFb) sHtml += `<a href="${d.socialFb}" target="_blank" class="hover:text-black transition"><i class="fa-brands fa-facebook-f"></i></a>`; if(d.socialYt) sHtml += `<a href="${d.socialYt}" target="_blank" class="hover:text-black transition"><i class="fa-brands fa-youtube"></i></a>`; if(d.socialX) sHtml += `<a href="${d.socialX}" target="_blank" class="hover:text-black transition"><i class="fa-brands fa-x-twitter"></i></a>`; document.getElementById('disp-footer-socials').innerHTML = sHtml;
         
@@ -129,7 +162,13 @@ const renderArtworks = () => {
     const grid = document.getElementById('portfolio-grid'); grid.innerHTML = ''; const adminList = document.getElementById('admin-artworks-list'); adminList.innerHTML = '';
     const filtered = currentFilter === 'all' ? artworksData : artworksData.filter(a => a.categoryId === currentFilter);
     if(filtered.length === 0) grid.innerHTML = `<div class="col-span-full text-center py-10 text-zinc-400">No records found.</div>`;
-    filtered.forEach(art => { const cName = categoriesData.find(c => c.id === art.categoryId)?.name || ''; grid.innerHTML += `<div class="masonry-item relative group bg-white shadow-sm overflow-hidden cursor-pointer" onclick="window.open('${art.url}', '_blank')"><img src="${art.url}" class="w-full h-auto object-cover transform group-hover:scale-[1.03] transition duration-700 ease-out"><div class="absolute inset-0 gallery-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6"><h3 class="text-xl font-heading text-white mb-1 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">${art.title}</h3><span class="text-[10px] tracking-widest text-zinc-300 uppercase translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">${cName}</span></div></div>`; });
+    
+    filtered.forEach(art => { 
+        const cName = categoriesData.find(c => c.id === art.categoryId)?.name || ''; 
+        // Changed onclick from window.open to openLightbox
+        grid.innerHTML += `<div class="masonry-item relative group bg-white shadow-sm overflow-hidden cursor-pointer" onclick="openLightbox('${art.url}')"><img src="${art.url}" class="w-full h-auto object-cover transform group-hover:scale-[1.03] transition duration-700 ease-out"><div class="absolute inset-0 gallery-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6"><h3 class="text-xl font-heading text-white mb-1 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">${art.title}</h3><span class="text-[10px] tracking-widest text-zinc-300 uppercase translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">${cName}</span></div></div>`; 
+    });
+    
     artworksData.forEach(art => { const cName = categoriesData.find(c => c.id === art.categoryId)?.name || ''; adminList.innerHTML += `<tr class="border-b border-zinc-800/50 hover:bg-zinc-800/30"><td class="py-2"><img src="${art.url}" class="w-10 h-10 object-cover bg-zinc-800"></td><td class="py-2 font-bold text-white text-xs">${art.title}</td><td class="py-2 text-right"><button onclick="openModal('artwork','${art.id}')" class="text-blue-400 px-2 hover:text-white"><i class="fa-solid fa-pen"></i></button><button onclick="if(confirm('刪除？')) deleteDoc(doc(colArtworks, '${art.id}'));" class="text-red-500 px-2 hover:text-white"><i class="fa-solid fa-trash"></i></button></td></tr>`; });
 };
 
@@ -137,7 +176,7 @@ const renderThoughts = () => {
     const list = document.getElementById('thoughts-list'); list.innerHTML = ''; const adminList = document.getElementById('admin-thoughts-list'); adminList.innerHTML = '';
     if(thoughtsData.length === 0) list.innerHTML = `<div class="text-center py-10 text-zinc-400">No records found.</div>`;
     thoughtsData.forEach(t => {
-        const date = t.timestamp ? new Date(t.timestamp.toDate()).toLocaleDateString() : ''; const imgHtml = t.url ? `<img src="${t.url}" class="w-full h-auto max-h-[500px] object-cover mb-8 rounded shadow-sm">` : '';
+        const date = t.timestamp ? new Date(t.timestamp.toDate()).toLocaleDateString() : ''; const imgHtml = t.url ? `<img src="${t.url}" class="w-full h-auto max-h-[500px] object-cover mb-8 rounded shadow-sm cursor-pointer" onclick="openLightbox('${t.url}')">` : '';
         list.innerHTML += `<article class="bg-white border border-zinc-100 p-8 md:p-12 shadow-sm hover:shadow-md transition-shadow">${imgHtml}<span class="text-xs text-zinc-400 tracking-widest uppercase">${date}</span><h3 class="text-3xl font-heading mt-3 mb-6 text-black">${t.title}</h3><p class="text-zinc-600 font-light leading-relaxed whitespace-pre-wrap">${t.content}</p></article>`;
         adminList.innerHTML += `<tr class="border-b border-zinc-800/50 hover:bg-zinc-800/30"><td class="py-2 text-zinc-500 text-xs">${date}</td><td class="py-2 font-bold text-white text-xs">${t.title}</td><td class="py-2 text-right"><button onclick="openModal('thought','${t.id}')" class="text-blue-400 px-2 hover:text-white"><i class="fa-solid fa-pen"></i></button><button onclick="if(confirm('刪除？')) deleteDoc(doc(colThoughts, '${t.id}'));" class="text-red-500 px-2 hover:text-white"><i class="fa-solid fa-trash"></i></button></td></tr>`;
     });
@@ -147,7 +186,7 @@ const renderOtherWorks = () => {
     const grid = document.getElementById('other-grid'); grid.innerHTML = ''; const adminList = document.getElementById('admin-other-list'); adminList.innerHTML = '';
     if(otherWorksData.length === 0) grid.innerHTML = `<div class="col-span-full text-center py-10 text-zinc-400">No records found.</div>`;
     otherWorksData.forEach(o => {
-        const imgHtml = o.url ? `<img src="${o.url}" class="w-full h-64 object-cover">` : '';
+        const imgHtml = o.url ? `<img src="${o.url}" class="w-full h-64 object-cover cursor-pointer hover:opacity-90 transition-opacity" onclick="openLightbox('${o.url}')">` : '';
         grid.innerHTML += `<div class="masonry-item bg-white border border-zinc-100 shadow-sm overflow-hidden flex flex-col">${imgHtml}<div class="p-8"><h3 class="text-2xl font-heading mb-4 text-black">${o.title}</h3><p class="text-zinc-600 font-light leading-relaxed whitespace-pre-wrap">${o.content}</p></div></div>`;
         adminList.innerHTML += `<tr class="border-b border-zinc-800/50 hover:bg-zinc-800/30"><td class="py-2"><img src="${o.url||''}" class="w-10 h-10 object-cover bg-zinc-800"></td><td class="py-2 font-bold text-white text-xs">${o.title}</td><td class="py-2 text-right"><button onclick="openModal('other','${o.id}')" class="text-blue-400 px-2 hover:text-white"><i class="fa-solid fa-pen"></i></button><button onclick="if(confirm('刪除？')) deleteDoc(doc(colOtherWorks, '${o.id}'));" class="text-red-500 px-2 hover:text-white"><i class="fa-solid fa-trash"></i></button></td></tr>`;
     });
