@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-HK">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="meta-title">現代藝術家 | 官方網站</title>
-    <meta name="description" id="meta-desc" content="探索藝術的邊界，現代藝術家的數位藝廊。">
+    <title id="meta-title">Modern Artist | Official Website</title>
+    <meta name="description" id="meta-desc" content="Explore the boundaries of art. Digital gallery of a modern artist.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -27,164 +27,185 @@
         .gallery-overlay { background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 60%); }
         .spinner { border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white; border-radius: 50%; width: 14px; height: 14px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 8px;}
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* Custom Select Style */
+        select { -webkit-appearance: none; -moz-appearance: none; appearance: none; background: transparent; background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>"); background-repeat: no-repeat; background-position-x: 100%; background-position-y: center; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
     <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2"></div>
 
+    <!-- Navigation -->
     <header class="fixed w-full top-0 z-40 glass-panel-light transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
-                <div class="flex items-center gap-4 w-1/4">
-                    <button id="auth-btn" class="text-xs tracking-wider text-zinc-400 hover:text-black transition-colors flex items-center gap-2"><i class="fa-solid fa-user-lock text-sm"></i> <span id="auth-text" class="hidden sm:inline">登入</span></button>
-                    <button id="admin-nav-btn" class="hidden text-xs font-bold tracking-widest bg-theme px-4 py-2 uppercase transition-all">進入後台</button>
+                <div class="flex items-center gap-4 flex-1">
+                    <button id="auth-btn" class="text-xs tracking-wider text-zinc-400 hover:text-black transition-colors flex items-center gap-2"><i class="fa-solid fa-user-lock text-sm"></i> <span id="auth-text" class="hidden sm:inline">Login</span></button>
+                    <button id="admin-nav-btn" class="hidden text-xs font-bold tracking-widest bg-theme px-4 py-2 uppercase transition-all">Admin Panel</button>
                 </div>
-                <div class="flex-shrink-0 cursor-pointer w-1/2 text-center" onclick="navigate('home')"><h1 id="disp-logo" class="text-xl md:text-3xl font-heading tracking-[0.2em] uppercase text-black truncate">ART STUDIO</h1></div>
-                <nav class="hidden lg:flex space-x-6 w-1/4 justify-end">
-                    <button onclick="navigate('home')" id="disp-nav-home" class="text-xs tracking-widest text-zinc-500 hover:text-black transition-colors">首頁</button>
-                    <button onclick="navigate('portfolio')" id="disp-nav-port" class="text-xs tracking-widest text-zinc-500 hover:text-black transition-colors">作品</button>
-                    <button onclick="navigate('thoughts')" id="disp-nav-thoughts" class="text-xs tracking-widest text-zinc-500 hover:text-black transition-colors">想法</button>
-                    <button onclick="navigate('other')" id="disp-nav-other" class="text-xs tracking-widest text-zinc-500 hover:text-black transition-colors">其他記錄</button>
-                    <button onclick="navigate('classes')" id="disp-nav-class" class="text-xs tracking-widest text-zinc-500 hover:text-black transition-colors">畫班</button>
-                    <button onclick="navigate('contact')" id="disp-nav-contact" class="text-xs tracking-widest text-zinc-500 hover:text-black transition-colors">聯絡</button>
+                <div class="flex-shrink-0 cursor-pointer px-4 text-center max-w-[40%] md:max-w-[50%]" onclick="navigate('home')"><h1 id="disp-logo" class="text-xl md:text-3xl font-heading tracking-[0.2em] uppercase text-black truncate">ART STUDIO</h1></div>
+                <nav class="hidden xl:flex space-x-6 flex-1 justify-end whitespace-nowrap">
+                    <button onclick="navigate('home')" id="disp-nav-home" class="text-xs tracking-widest text-zinc-500 hover:text-black transition-colors">Home</button>
+                    <button onclick="navigate('portfolio')" id="disp-nav-port" class="text-xs tracking-widest text-zinc-500 hover:text-black transition-colors">Portfolio</button>
+                    <button onclick="navigate('thoughts')" id="disp-nav-thoughts" class="text-xs tracking-widest text-zinc-500 hover:text-black transition-colors">Thoughts</button>
+                    <button onclick="navigate('other')" id="disp-nav-other" class="text-xs tracking-widest text-zinc-500 hover:text-black transition-colors">Other Works</button>
+                    <button onclick="navigate('classes')" id="disp-nav-class" class="text-xs tracking-widest text-zinc-500 hover:text-black transition-colors">Classes</button>
+                    <button onclick="navigate('contact')" id="disp-nav-contact" class="text-xs tracking-widest text-zinc-500 hover:text-black transition-colors">Contact</button>
                 </nav>
-                <div class="lg:hidden flex items-center w-1/4 justify-end"><button id="mobile-menu-btn" class="text-zinc-800 hover:text-black" onclick="toggleMobileMenu()"><i class="fa-solid fa-bars text-xl"></i></button></div>
+                <div class="xl:hidden flex items-center flex-1 justify-end"><button id="mobile-menu-btn" class="text-zinc-800 hover:text-black" onclick="toggleMobileMenu()"><i class="fa-solid fa-bars text-xl"></i></button></div>
             </div>
         </div>
-        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-zinc-100 absolute w-full shadow-lg">
+        <div id="mobile-menu" class="hidden xl:hidden bg-white border-t border-zinc-100 absolute w-full shadow-lg">
             <div class="px-6 py-4 space-y-4 flex flex-col text-center">
-                <button onclick="navigate('home'); toggleMobileMenu()" class="block w-full text-sm tracking-widest text-zinc-600 hover:text-black">首頁</button>
-                <button onclick="navigate('portfolio'); toggleMobileMenu()" class="block w-full text-sm tracking-widest text-zinc-600 hover:text-black">作品集</button>
-                <button onclick="navigate('thoughts'); toggleMobileMenu()" class="block w-full text-sm tracking-widest text-zinc-600 hover:text-black">想法</button>
-                <button onclick="navigate('other'); toggleMobileMenu()" class="block w-full text-sm tracking-widest text-zinc-600 hover:text-black">其他工作記錄</button>
-                <button onclick="navigate('classes'); toggleMobileMenu()" class="block w-full text-sm tracking-widest text-zinc-600 hover:text-black">畫畫班</button>
-                <button onclick="navigate('contact'); toggleMobileMenu()" class="block w-full text-sm tracking-widest text-zinc-600 hover:text-black">聯絡我們</button>
+                <button onclick="navigate('home'); toggleMobileMenu()" class="block w-full text-sm tracking-widest text-zinc-600 hover:text-black">Home</button>
+                <button onclick="navigate('portfolio'); toggleMobileMenu()" class="block w-full text-sm tracking-widest text-zinc-600 hover:text-black">Portfolio</button>
+                <button onclick="navigate('thoughts'); toggleMobileMenu()" class="block w-full text-sm tracking-widest text-zinc-600 hover:text-black">Thoughts</button>
+                <button onclick="navigate('other'); toggleMobileMenu()" class="block w-full text-sm tracking-widest text-zinc-600 hover:text-black">Other Works</button>
+                <button onclick="navigate('classes'); toggleMobileMenu()" class="block w-full text-sm tracking-widest text-zinc-600 hover:text-black">Classes</button>
+                <button onclick="navigate('contact'); toggleMobileMenu()" class="block w-full text-sm tracking-widest text-zinc-600 hover:text-black">Contact</button>
             </div>
         </div>
     </header>
 
     <main id="main-content" class="flex-grow pt-20">
+        <!-- Hero Section -->
         <section id="view-home" class="view-section min-h-[calc(100vh-5rem)] flex items-center justify-center relative overflow-hidden bg-zinc-50">
             <div class="absolute inset-0 z-0 p-4 md:p-8"><div class="relative w-full h-full overflow-hidden bg-zinc-200"><img id="disp-hero-bg" src="" class="w-full h-full object-cover"><div class="absolute inset-0 bg-black/30"></div></div></div>
             <div class="relative z-10 text-center px-4 max-w-4xl mx-auto fade-in text-white">
-                <h2 id="disp-hero-title" class="text-5xl md:text-7xl font-heading tracking-wide mb-6 drop-shadow-lg">載入中...</h2>
-                <p id="disp-hero-sub" class="text-base md:text-lg font-light tracking-widest mb-12 max-w-2xl mx-auto leading-relaxed opacity-90">請稍候</p>
+                <h2 id="disp-hero-title" class="text-5xl md:text-7xl font-heading tracking-wide mb-6 drop-shadow-lg">Loading...</h2>
+                <p id="disp-hero-sub" class="text-base md:text-lg font-light tracking-widest mb-12 max-w-2xl mx-auto leading-relaxed opacity-90">Please wait</p>
                 <div class="flex flex-col sm:flex-row gap-6 justify-center">
-                    <button onclick="navigate('portfolio')" id="disp-hero-btn1" class="px-10 py-4 bg-white text-black text-sm tracking-widest uppercase hover:bg-zinc-200 transition-colors">觀看作品</button>
-                    <button onclick="navigate('classes')" id="disp-hero-btn2" class="px-10 py-4 bg-transparent border border-white text-white text-sm tracking-widest uppercase hover:bg-white hover:text-black transition-colors">報名畫畫班</button>
+                    <button onclick="navigate('portfolio')" id="disp-hero-btn1" class="px-10 py-4 bg-white text-black text-sm tracking-widest uppercase hover:bg-zinc-200 transition-colors">View Portfolio</button>
+                    <button onclick="navigate('classes')" id="disp-hero-btn2" class="px-10 py-4 bg-transparent border border-white text-white text-sm tracking-widest uppercase hover:bg-white hover:text-black transition-colors">Enroll Classes</button>
                 </div>
             </div>
         </section>
 
+        <!-- Portfolio Section -->
         <section id="view-portfolio" class="view-section hidden max-w-[1400px] mx-auto px-6 py-20 md:py-32 fade-in">
-            <div class="text-center mb-16"><h2 id="disp-port-title" class="text-4xl md:text-5xl font-heading mb-6 tracking-widest text-zinc-900">Selected Works</h2><div class="w-12 h-px bg-zinc-300 mx-auto mb-6"></div><p id="disp-port-sub" class="text-zinc-500 max-w-2xl mx-auto font-light tracking-wide">精選創作</p></div>
+            <div class="text-center mb-16"><h2 id="disp-port-title" class="text-4xl md:text-5xl font-heading mb-6 tracking-widest text-zinc-900">Selected Works</h2><div class="w-12 h-px bg-zinc-300 mx-auto mb-6"></div><p id="disp-port-sub" class="text-zinc-500 max-w-2xl mx-auto font-light tracking-wide">Featured Creations</p></div>
             <div id="portfolio-filters" class="flex flex-wrap justify-center gap-6 mb-16"></div>
-            <div id="portfolio-grid" class="masonry"><div class="text-center py-20 text-zinc-400 w-full tracking-widest">載入中...</div></div>
+            <div id="portfolio-grid" class="masonry"><div class="text-center py-20 text-zinc-400 w-full tracking-widest">Loading...</div></div>
         </section>
 
+        <!-- Thoughts Section -->
         <section id="view-thoughts" class="view-section hidden max-w-4xl mx-auto px-6 py-20 md:py-32 fade-in">
-            <div class="text-center mb-16"><h2 id="disp-thoughts-title" class="text-4xl md:text-5xl font-heading mb-6 tracking-widest text-zinc-900">Thoughts</h2><div class="w-12 h-px bg-zinc-300 mx-auto mb-6"></div><p id="disp-thoughts-sub" class="text-zinc-500 max-w-2xl mx-auto font-light tracking-wide">藝術理念與隨筆</p></div>
-            <div id="thoughts-list" class="space-y-12"><div class="text-center py-20 text-zinc-400 w-full tracking-widest">載入中...</div></div>
+            <div class="text-center mb-16"><h2 id="disp-thoughts-title" class="text-4xl md:text-5xl font-heading mb-6 tracking-widest text-zinc-900">Thoughts</h2><div class="w-12 h-px bg-zinc-300 mx-auto mb-6"></div><p id="disp-thoughts-sub" class="text-zinc-500 max-w-2xl mx-auto font-light tracking-wide">Artistic philosophy and essays.</p></div>
+            <div id="thoughts-list" class="space-y-12"><div class="text-center py-20 text-zinc-400 w-full tracking-widest">Loading...</div></div>
         </section>
 
+        <!-- Other Works Section -->
         <section id="view-other" class="view-section hidden max-w-[1400px] mx-auto px-6 py-20 md:py-32 fade-in">
-            <div class="text-center mb-16"><h2 id="disp-other-title" class="text-4xl md:text-5xl font-heading mb-6 tracking-widest text-zinc-900">Other Works</h2><div class="w-12 h-px bg-zinc-300 mx-auto mb-6"></div><p id="disp-other-sub" class="text-zinc-500 max-w-2xl mx-auto font-light tracking-wide">展覽、合作與其他紀錄</p></div>
-            <div id="other-grid" class="masonry"><div class="text-center py-20 text-zinc-400 w-full tracking-widest">載入中...</div></div>
+            <div class="text-center mb-16"><h2 id="disp-other-title" class="text-4xl md:text-5xl font-heading mb-6 tracking-widest text-zinc-900">Other Works</h2><div class="w-12 h-px bg-zinc-300 mx-auto mb-6"></div><p id="disp-other-sub" class="text-zinc-500 max-w-2xl mx-auto font-light tracking-wide">Exhibitions and collaborations.</p></div>
+            <div id="other-grid" class="masonry"><div class="text-center py-20 text-zinc-400 w-full tracking-widest">Loading...</div></div>
         </section>
 
+        <!-- Classes Section -->
         <section id="view-classes" class="view-section hidden max-w-5xl mx-auto px-6 py-20 md:py-32 fade-in">
             <div class="bg-white border border-zinc-100 p-8 md:p-16 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                <div class="text-center mb-12"><h2 id="disp-class-title" class="text-3xl md:text-4xl font-heading mb-6 tracking-widest text-zinc-900">專業畫畫班招生</h2><div class="w-12 h-px bg-theme mx-auto mb-6"></div><div id="disp-class-desc" class="text-zinc-600 leading-relaxed max-w-2xl mx-auto font-light whitespace-pre-wrap">請填寫表單</div></div>
+                <div class="text-center mb-12"><h2 id="disp-class-title" class="text-3xl md:text-4xl font-heading mb-6 tracking-widest text-zinc-900">Art Classes</h2><div class="w-12 h-px bg-theme mx-auto mb-6"></div><div id="disp-class-desc" class="text-zinc-600 leading-relaxed max-w-2xl mx-auto font-light whitespace-pre-wrap">Please fill out the form.</div></div>
                 <form id="class-form" class="space-y-8 max-w-2xl mx-auto">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8"><div><label class="block text-xs uppercase tracking-widest text-zinc-500 mb-2">姓名 *</label><input type="text" id="class-name" required class="w-full bg-transparent border-b border-zinc-300 py-2 text-zinc-900 focus:outline-none focus:border-black transition-colors rounded-none"></div><div><label class="block text-xs uppercase tracking-widest text-zinc-500 mb-2">聯絡電話 *</label><input type="tel" id="class-phone" required class="w-full bg-transparent border-b border-zinc-300 py-2 text-zinc-900 focus:outline-none focus:border-black transition-colors rounded-none"></div></div>
-                    <div><label class="block text-xs uppercase tracking-widest text-zinc-500 mb-2">電子郵件 *</label><input type="email" id="class-email" required class="w-full bg-transparent border-b border-zinc-300 py-2 text-zinc-900 focus:outline-none focus:border-black transition-colors rounded-none"></div>
-                    <div><label class="block text-xs uppercase tracking-widest text-zinc-500 mb-2">學習目標或留言</label><textarea id="class-message" rows="3" class="w-full bg-transparent border-b border-zinc-300 py-2 text-zinc-900 focus:outline-none focus:border-black transition-colors rounded-none resize-none"></textarea></div>
-                    <div class="text-center pt-4"><button type="submit" class="px-12 py-4 bg-theme text-xs tracking-widest uppercase hover:opacity-80 transition-opacity">送出報名資料</button></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8"><div><label class="block text-xs uppercase tracking-widest text-zinc-500 mb-2">Name *</label><input type="text" id="class-name" required class="w-full bg-transparent border-b border-zinc-300 py-2 text-zinc-900 focus:outline-none focus:border-black transition-colors rounded-none"></div><div><label class="block text-xs uppercase tracking-widest text-zinc-500 mb-2">Phone Number *</label><input type="tel" id="class-phone" required class="w-full bg-transparent border-b border-zinc-300 py-2 text-zinc-900 focus:outline-none focus:border-black transition-colors rounded-none"></div></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div><label class="block text-xs uppercase tracking-widest text-zinc-500 mb-2">Email Address *</label><input type="email" id="class-email" required class="w-full bg-transparent border-b border-zinc-300 py-2 text-zinc-900 focus:outline-none focus:border-black transition-colors rounded-none"></div>
+                        <div><label class="block text-xs uppercase tracking-widest text-zinc-500 mb-2">Preferred Time Slot *</label><select id="class-timeslot" required class="w-full bg-transparent border-b border-zinc-300 py-2 text-zinc-900 focus:outline-none focus:border-black transition-colors rounded-none"><option value="" disabled selected>Select a time</option></select></div>
+                    </div>
+                    <div><label class="block text-xs uppercase tracking-widest text-zinc-500 mb-2">Goals or Messages</label><textarea id="class-message" rows="3" class="w-full bg-transparent border-b border-zinc-300 py-2 text-zinc-900 focus:outline-none focus:border-black transition-colors rounded-none resize-none"></textarea></div>
+                    <div class="text-center pt-4"><button type="submit" class="px-12 py-4 bg-theme text-xs tracking-widest uppercase hover:opacity-80 transition-opacity">Submit Registration</button></div>
                 </form>
             </div>
         </section>
 
-        <section id="view-contact" class="view-section hidden max-w-6xl mx-auto px-6 py-20 md:py-32 fade-in">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
-                <div class="md:pr-8"><h2 id="disp-contact-title" class="text-3xl md:text-5xl font-heading mb-8 tracking-widest text-zinc-900">聯絡資訊</h2><p id="disp-contact-desc" class="text-zinc-500 mb-12 leading-relaxed font-light whitespace-pre-wrap">歡迎聯絡</p><div class="space-y-8" id="disp-contact-info-container"></div></div>
-                <div class="bg-zinc-50 p-8 md:p-12"><h3 class="text-xl font-heading tracking-widest mb-8">發送訊息</h3><form id="contact-form" class="space-y-6"><div><label class="block text-xs uppercase tracking-widest text-zinc-500 mb-2">姓名 *</label><input type="text" id="contact-name" required class="w-full bg-transparent border-b border-zinc-300 py-2 text-zinc-900 focus:outline-none focus:border-black rounded-none"></div><div><label class="block text-xs uppercase tracking-widest text-zinc-500 mb-2">Email *</label><input type="email" id="contact-email" required class="w-full bg-transparent border-b border-zinc-300 py-2 text-zinc-900 focus:outline-none focus:border-black rounded-none"></div><div><label class="block text-xs uppercase tracking-widest text-zinc-500 mb-2">內容 *</label><textarea id="contact-message" rows="4" required class="w-full bg-transparent border-b border-zinc-300 py-2 text-zinc-900 focus:outline-none focus:border-black rounded-none resize-none"></textarea></div><div class="pt-4"><button type="submit" class="w-full py-4 border border-black text-black text-xs tracking-widest uppercase hover:bg-black hover:text-white transition-colors">發送訊息</button></div></form></div>
-            </div>
+        <!-- Contact Section (Centered, No Form) -->
+        <section id="view-contact" class="view-section hidden max-w-4xl mx-auto px-6 py-20 md:py-32 fade-in text-center">
+            <h2 id="disp-contact-title" class="text-3xl md:text-5xl font-heading mb-8 tracking-widest text-zinc-900">Contact</h2>
+            <div class="w-12 h-px bg-zinc-300 mx-auto mb-6"></div>
+            <p id="disp-contact-desc" class="text-zinc-500 mb-16 leading-relaxed font-light whitespace-pre-wrap">Get in touch.</p>
+            <div class="flex flex-col items-center space-y-10" id="disp-contact-info-container"></div>
         </section>
 
+        <!-- Admin Panel -->
         <section id="view-admin" class="view-section hidden w-full px-4 py-8 fade-in bg-zinc-950 min-h-screen -mt-20 pt-28 text-zinc-300">
             <div class="max-w-screen-2xl mx-auto flex flex-col lg:flex-row gap-8">
+                <!-- Admin Sidebar -->
                 <div class="w-full lg:w-64 flex-shrink-0">
                     <div class="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden sticky top-28 shadow-2xl">
-                        <div class="p-4 border-b border-zinc-800 bg-black/50"><h3 class="text-base font-bold flex items-center gap-2 text-white"><i class="fa-solid fa-wand-magic-sparkles text-zinc-400"></i> 控制面板</h3></div>
-                        <div class="flex flex-col py-2 h-[60vh] overflow-y-auto">
-                            <div class="px-4 py-2 text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-2">外觀與頁面</div>
-                            <button onclick="switchAdminMenu('theme')" id="menu-theme" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white admin-menu-active">主題外觀 & SEO</button>
-                            <button onclick="switchAdminMenu('global')" id="menu-global" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white">導航列與頁尾</button>
-                            <button onclick="switchAdminMenu('home')" id="menu-home" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white">首頁 (Hero) 視覺</button>
-                            <button onclick="switchAdminMenu('port')" id="menu-port" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white">頁面文字: 作品/想法/其他</button>
-                            <button onclick="switchAdminMenu('class')" id="menu-class" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white">畫畫班招生內容</button>
-                            <button onclick="switchAdminMenu('contact')" id="menu-contact" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white">聯絡資訊與社群</button>
+                        <div class="p-4 border-b border-zinc-800 bg-black/50"><h3 class="text-base font-bold flex items-center gap-2 text-white"><i class="fa-solid fa-wand-magic-sparkles text-zinc-400"></i> Control Panel</h3></div>
+                        <div class="flex flex-col py-2 h-[65vh] overflow-y-auto">
+                            <div class="px-4 py-2 text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-2">Appearance & Global</div>
+                            <button onclick="switchAdminMenu('theme')" id="menu-theme" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white admin-menu-active">Theme & SEO</button>
+                            <button onclick="switchAdminMenu('global')" id="menu-global" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white">Navigation & Footer</button>
                             
-                            <div class="px-4 py-2 text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-4">資料管理庫</div>
-                            <button onclick="switchAdminMenu('artworks')" id="menu-artworks" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white"><span>作品集管理</span></button>
-                            <button onclick="switchAdminMenu('thoughts')" id="menu-thoughts" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white"><span>想法 (Blog) 管理</span></button>
-                            <button onclick="switchAdminMenu('otherWorks')" id="menu-otherWorks" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white"><span>其他記錄管理</span></button>
-                            <button onclick="switchAdminMenu('submissions')" id="menu-submissions" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white flex justify-between items-center"><span>表單收件匣</span><span id="new-badge" class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full hidden">新</span></button>
+                            <div class="px-4 py-2 text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-4">Page Texts</div>
+                            <button onclick="switchAdminMenu('home')" id="menu-home" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white">Hero Section</button>
+                            <button onclick="switchAdminMenu('port')" id="menu-port" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white">Section Titles</button>
+                            <button onclick="switchAdminMenu('class')" id="menu-class" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white">Classes Settings</button>
+                            <button onclick="switchAdminMenu('contact')" id="menu-contact" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white">Contact Info</button>
+                            
+                            <div class="px-4 py-2 text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-4">Data Management</div>
+                            <button onclick="switchAdminMenu('artworks')" id="menu-artworks" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white"><span>🖼️ Artworks</span></button>
+                            <button onclick="switchAdminMenu('thoughts')" id="menu-thoughts" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white"><span>📝 Thoughts (Blog)</span></button>
+                            <button onclick="switchAdminMenu('otherWorks')" id="menu-otherWorks" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white"><span>📁 Other Works</span></button>
+                            <button onclick="switchAdminMenu('submissions')" id="menu-submissions" class="admin-menu-btn text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-white flex justify-between items-center"><span>Inbox</span><span id="new-badge" class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full hidden">New</span></button>
                         </div>
                     </div>
                 </div>
 
+                <!-- Admin Main Content -->
                 <div class="flex-grow bg-zinc-900 border border-zinc-800 rounded-lg shadow-2xl relative overflow-hidden text-zinc-300">
                     <form id="master-settings-form">
                         <div class="bg-zinc-800/80 border-b border-zinc-800 p-4 flex justify-between items-center sticky top-0 z-10 backdrop-blur-md">
-                            <h2 id="admin-section-title" class="text-lg font-bold text-white">主題外觀 & SEO</h2>
-                            <button type="submit" id="save-settings-btn" class="bg-white text-black font-bold text-sm py-2 px-6 rounded shadow flex items-center gap-2 hover:bg-zinc-200 transition-all"><i class="fa-solid fa-floppy-disk"></i> 儲存所有設定</button>
+                            <h2 id="admin-section-title" class="text-lg font-bold text-white">Theme & SEO</h2>
+                            <button type="submit" id="save-settings-btn" class="bg-white text-black font-bold text-sm py-2 px-6 rounded shadow flex items-center gap-2 hover:bg-zinc-200 transition-all"><i class="fa-solid fa-floppy-disk"></i> Save All Settings</button>
                         </div>
 
                         <div class="p-6 md:p-8">
                             <div id="sec-theme" class="admin-section active space-y-6">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div class="bg-zinc-950 p-5 rounded border border-zinc-800"><label class="block text-sm font-bold text-zinc-200 mb-3">品牌主題色</label><input type="color" id="set-theme-color" class="w-16 h-12 rounded cursor-pointer bg-transparent border-0 p-0"></div>
-                                    <div class="bg-zinc-950 p-5 rounded border border-zinc-800"><label class="block text-sm font-bold text-zinc-200 mb-3">SEO 網站描述 (Meta)</label><textarea id="set-meta-desc" rows="3" class="w-full bg-black border border-zinc-700 rounded p-3 text-white text-sm focus:outline-none"></textarea></div>
+                                    <div class="bg-zinc-950 p-5 rounded border border-zinc-800"><label class="block text-sm font-bold text-zinc-200 mb-3">Brand Theme Color</label><input type="color" id="set-theme-color" class="w-16 h-12 rounded cursor-pointer bg-transparent border-0 p-0"></div>
+                                    <div class="bg-zinc-950 p-5 rounded border border-zinc-800"><label class="block text-sm font-bold text-zinc-200 mb-3">SEO Meta Description</label><textarea id="set-meta-desc" rows="3" class="w-full bg-black border border-zinc-700 rounded p-3 text-white text-sm focus:outline-none focus:border-zinc-500"></textarea></div>
                                 </div>
                             </div>
-                            <div id="sec-global" class="admin-section space-y-6"><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div class="space-y-1"><label class="text-sm">Logo 文字</label><input type="text" id="set-logo" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">瀏覽器標題</label><input type="text" id="set-meta-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">導航: 首頁</label><input type="text" id="set-nav-home" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">導航: 作品集</label><input type="text" id="set-nav-port" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">導航: 想法</label><input type="text" id="set-nav-thoughts" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">導航: 其他記錄</label><input type="text" id="set-nav-other" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">導航: 畫畫班</label><input type="text" id="set-nav-class" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">導航: 聯絡</label><input type="text" id="set-nav-contact" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="col-span-full space-y-1"><label class="text-sm">頁尾版權宣告</label><input type="text" id="set-footer" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div></div></div>
+                            <div id="sec-global" class="admin-section space-y-6"><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div class="space-y-1"><label class="text-sm">Logo Text</label><input type="text" id="set-logo" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">Browser Tab Title</label><input type="text" id="set-meta-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">Nav: Home</label><input type="text" id="set-nav-home" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">Nav: Portfolio</label><input type="text" id="set-nav-port" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">Nav: Thoughts</label><input type="text" id="set-nav-thoughts" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">Nav: Other Works</label><input type="text" id="set-nav-other" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">Nav: Classes</label><input type="text" id="set-nav-class" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">Nav: Contact</label><input type="text" id="set-nav-contact" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="col-span-full space-y-1"><label class="text-sm">Footer Copyright</label><input type="text" id="set-footer" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div></div></div>
                             <div id="sec-home" class="admin-section space-y-6">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div class="col-span-full space-y-1"><label class="text-sm">大標題</label><input type="text" id="set-hero-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="col-span-full space-y-1"><label class="text-sm">副標題</label><textarea id="set-hero-sub" rows="2" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></textarea></div>
-                                <div class="col-span-full bg-zinc-950 p-5 rounded border border-zinc-800"><label class="block text-sm font-bold text-zinc-200 mb-3"><i class="fa-solid fa-image mr-2"></i>首頁背景圖 (免費圖床)</label><div class="flex gap-4 items-center"><img id="preview-hero-bg" src="" class="w-32 h-20 object-cover rounded border border-zinc-700"><div class="flex-grow"><div class="flex gap-2"><input type="file" id="upload-hero-bg" accept="image/*" class="text-sm text-zinc-400 file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:bg-zinc-800 file:text-white hover:file:bg-zinc-700 cursor-pointer"><button type="button" id="btn-hero-upload" onclick="handleHeroUpload()" class="px-3 py-1.5 bg-zinc-700 hover:bg-zinc-600 rounded text-xs text-white">上傳至圖床</button></div><input type="url" id="set-hero-bg" class="w-full bg-black border border-zinc-700 rounded p-2 text-white text-sm mt-2" placeholder="或直接貼上圖片 URL"></div></div></div>
-                                <div class="space-y-1"><label class="text-sm">左按鈕</label><input type="text" id="set-hero-btn1" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">右按鈕</label><input type="text" id="set-hero-btn2" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div></div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div class="col-span-full space-y-1"><label class="text-sm">Hero Title</label><input type="text" id="set-hero-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white font-bold"></div><div class="col-span-full space-y-1"><label class="text-sm">Hero Subtitle</label><textarea id="set-hero-sub" rows="2" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></textarea></div>
+                                <div class="col-span-full bg-zinc-950 p-5 rounded border border-zinc-800"><label class="block text-sm font-bold text-zinc-200 mb-3"><i class="fa-solid fa-image mr-2"></i>Hero Background Image</label><div class="flex gap-4 items-center"><img id="preview-hero-bg" src="" class="w-32 h-20 object-cover rounded border border-zinc-700"><div class="flex-grow"><div class="flex gap-2"><input type="file" id="upload-hero-bg" accept="image/*" class="text-sm text-zinc-400 file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:bg-zinc-800 file:text-white hover:file:bg-zinc-700 cursor-pointer"><button type="button" id="btn-hero-upload" onclick="handleHeroUpload()" class="px-3 py-1.5 bg-zinc-700 hover:bg-zinc-600 rounded text-xs text-white">Upload</button></div><input type="url" id="set-hero-bg" class="w-full bg-black border border-zinc-700 rounded p-2 text-white text-sm mt-2" placeholder="Or paste image URL here"></div></div></div>
+                                <div class="space-y-1"><label class="text-sm">Left Button Text</label><input type="text" id="set-hero-btn1" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">Right Button Text</label><input type="text" id="set-hero-btn2" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div></div>
                             </div>
                             <div id="sec-port" class="admin-section space-y-6">
-                                <h3 class="text-white font-bold border-b border-zinc-800 pb-2">作品集區塊</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div class="space-y-1"><label class="text-sm">標題</label><input type="text" id="set-port-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-white"></div><div class="space-y-1"><label class="text-sm">副標題</label><input type="text" id="set-port-sub" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-white"></div></div>
-                                <h3 class="text-white font-bold border-b border-zinc-800 pb-2 mt-6">想法 (Blog) 區塊</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div class="space-y-1"><label class="text-sm">標題</label><input type="text" id="set-thoughts-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-white"></div><div class="space-y-1"><label class="text-sm">副標題</label><input type="text" id="set-thoughts-sub" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-white"></div></div>
-                                <h3 class="text-white font-bold border-b border-zinc-800 pb-2 mt-6">其他工作記錄區塊</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div class="space-y-1"><label class="text-sm">標題</label><input type="text" id="set-other-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-white"></div><div class="space-y-1"><label class="text-sm">副標題</label><input type="text" id="set-other-sub" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-white"></div></div>
+                                <div class="bg-blue-950/30 border border-blue-900 rounded p-4 mb-6">
+                                    <p class="text-sm text-blue-200 mb-3"><i class="fa-solid fa-circle-info"></i> This section changes the large titles on the pages. To write posts or upload works, click below:</p>
+                                    <div class="flex gap-3"><button type="button" onclick="switchAdminMenu('thoughts')" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded shadow">📝 Add Thoughts</button><button type="button" onclick="switchAdminMenu('otherWorks')" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded shadow">📁 Add Other Works</button></div>
+                                </div>
+                                <h3 class="text-white font-bold border-b border-zinc-800 pb-2">Portfolio Section</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div class="space-y-1"><label class="text-sm">Title</label><input type="text" id="set-port-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-white"></div><div class="space-y-1"><label class="text-sm">Subtitle</label><input type="text" id="set-port-sub" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-white"></div></div>
+                                <h3 class="text-white font-bold border-b border-zinc-800 pb-2 mt-6">Thoughts Section</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div class="space-y-1"><label class="text-sm">Title</label><input type="text" id="set-thoughts-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-white"></div><div class="space-y-1"><label class="text-sm">Subtitle</label><input type="text" id="set-thoughts-sub" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-white"></div></div>
+                                <h3 class="text-white font-bold border-b border-zinc-800 pb-2 mt-6">Other Works Section</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div class="space-y-1"><label class="text-sm">Title</label><input type="text" id="set-other-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-white"></div><div class="space-y-1"><label class="text-sm">Subtitle</label><input type="text" id="set-other-sub" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-white"></div></div>
                             </div>
                             
-                            <div id="sec-class" class="admin-section space-y-6"><div class="space-y-4"><div class="space-y-1"><label class="text-sm">標題</label><input type="text" id="set-class-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">詳細介紹</label><textarea id="set-class-desc" rows="6" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></textarea></div></div></div>
-                            <div id="sec-contact" class="admin-section space-y-6"><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div class="col-span-full space-y-1"><label class="text-sm">標題</label><input type="text" id="set-contact-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="col-span-full space-y-1"><label class="text-sm">引言</label><textarea id="set-contact-desc" rows="3" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></textarea></div><div class="col-span-full bg-zinc-950 p-5 rounded border border-zinc-800 mt-2"><h4 class="font-bold text-white mb-4 text-sm">基本聯絡資訊</h4><div class="grid grid-cols-1 md:grid-cols-3 gap-4"><div><label class="text-xs">Email</label><input type="text" id="set-info-email" class="w-full bg-black border border-zinc-800 rounded p-2 text-white"></div><div><label class="text-xs">電話</label><input type="text" id="set-info-phone" class="w-full bg-black border border-zinc-800 rounded p-2 text-white"></div><div><label class="text-xs">地址</label><input type="text" id="set-info-address" class="w-full bg-black border border-zinc-800 rounded p-2 text-white"></div></div></div><div class="col-span-full bg-zinc-950 p-5 rounded border border-zinc-800"><h4 class="font-bold text-white mb-4 text-sm">社群連結 (留空隱藏)</h4><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label class="text-xs">IG</label><input type="text" id="set-social-ig" class="w-full bg-black border border-zinc-800 rounded p-2 text-white"></div><div><label class="text-xs">FB</label><input type="text" id="set-social-fb" class="w-full bg-black border border-zinc-800 rounded p-2 text-white"></div><div><label class="text-xs">YouTube</label><input type="text" id="set-social-yt" class="w-full bg-black border border-zinc-800 rounded p-2 text-white"></div><div><label class="text-xs">X</label><input type="text" id="set-social-x" class="w-full bg-black border border-zinc-800 rounded p-2 text-white"></div></div></div></div></div>
+                            <div id="sec-class" class="admin-section space-y-6"><div class="space-y-4"><div class="space-y-1"><label class="text-sm">Section Title</label><input type="text" id="set-class-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="space-y-1"><label class="text-sm">Description</label><textarea id="set-class-desc" rows="4" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></textarea></div><div class="space-y-1"><label class="text-sm text-theme font-bold">Time Slots (Separate with commas ',')</label><input type="text" id="set-class-slots" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white font-mono text-sm" placeholder="e.g. Sat 10:00AM, Sun 2:00PM, Weekday Evenings"></div></div></div>
+                            <div id="sec-contact" class="admin-section space-y-6"><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div class="col-span-full space-y-1"><label class="text-sm">Section Title</label><input type="text" id="set-contact-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></div><div class="col-span-full space-y-1"><label class="text-sm">Subtitle</label><textarea id="set-contact-desc" rows="3" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white"></textarea></div><div class="col-span-full bg-zinc-950 p-5 rounded border border-zinc-800 mt-2"><h4 class="font-bold text-white mb-4 text-sm">Contact Info</h4><div class="grid grid-cols-1 md:grid-cols-3 gap-4"><div><label class="text-xs">Email</label><input type="text" id="set-info-email" class="w-full bg-black border border-zinc-800 rounded p-2 text-white"></div><div><label class="text-xs">Phone</label><input type="text" id="set-info-phone" class="w-full bg-black border border-zinc-800 rounded p-2 text-white"></div><div><label class="text-xs">Address</label><input type="text" id="set-info-address" class="w-full bg-black border border-zinc-800 rounded p-2 text-white"></div></div></div><div class="col-span-full bg-zinc-950 p-5 rounded border border-zinc-800"><h4 class="font-bold text-white mb-4 text-sm">Social Links (Leave blank to hide)</h4><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label class="text-xs">Instagram</label><input type="text" id="set-social-ig" class="w-full bg-black border border-zinc-800 rounded p-2 text-white"></div><div><label class="text-xs">Facebook</label><input type="text" id="set-social-fb" class="w-full bg-black border border-zinc-800 rounded p-2 text-white"></div><div><label class="text-xs">YouTube</label><input type="text" id="set-social-yt" class="w-full bg-black border border-zinc-800 rounded p-2 text-white"></div><div><label class="text-xs">X (Twitter)</label><input type="text" id="set-social-x" class="w-full bg-black border border-zinc-800 rounded p-2 text-white"></div></div></div></div></div>
                         </div>
                     </form>
 
+                    <!-- Data Managers -->
                     <div id="sec-artworks" class="admin-section p-6 space-y-6">
-                        <div class="bg-zinc-950 rounded border border-zinc-800 p-5"><h3 class="font-bold text-white mb-4 text-sm">分類標籤管理</h3><form id="add-category-form" class="flex gap-4"><input type="text" id="new-category-name" required placeholder="新增分類" class="flex-grow bg-black border border-zinc-800 rounded p-2 text-white text-sm"><button type="submit" class="bg-zinc-800 text-white px-4 rounded text-sm hover:bg-zinc-700">新增</button></form><div class="flex flex-wrap gap-2 mt-4" id="admin-categories-list"></div></div>
-                        <div><div class="flex justify-between items-center mb-4"><h3 class="font-bold text-white text-sm">作品庫</h3><button onclick="openModal('artwork')" class="bg-white text-black text-xs font-bold px-3 py-1.5 rounded hover:bg-zinc-200"><i class="fa-solid fa-plus"></i> 新增作品</button></div><div class="overflow-x-auto bg-zinc-950 border border-zinc-800 rounded"><table class="w-full text-left"><thead class="border-b border-zinc-800 text-xs text-zinc-500 bg-black/50"><tr><th class="p-3 w-16">圖</th><th class="p-3">名稱</th><th class="p-3 text-right">操作</th></tr></thead><tbody id="admin-artworks-list" class="divide-y divide-zinc-800/50 text-sm"></tbody></table></div></div>
+                        <div class="bg-zinc-950 rounded border border-zinc-800 p-5"><h3 class="font-bold text-white mb-4 text-sm">Categories</h3><form id="add-category-form" class="flex gap-4"><input type="text" id="new-category-name" required placeholder="New Category Name" class="flex-grow bg-black border border-zinc-800 rounded p-2 text-white text-sm"><button type="submit" class="bg-zinc-800 text-white px-4 rounded text-sm hover:bg-zinc-700">Add</button></form><div class="flex flex-wrap gap-2 mt-4" id="admin-categories-list"></div></div>
+                        <div><div class="flex justify-between items-center mb-4"><h3 class="font-bold text-white text-sm">Artworks</h3><button onclick="openModal('artwork')" class="bg-white text-black text-xs font-bold px-3 py-1.5 rounded hover:bg-zinc-200"><i class="fa-solid fa-plus"></i> Add Artwork</button></div><div class="overflow-x-auto bg-zinc-950 border border-zinc-800 rounded"><table class="w-full text-left"><thead class="border-b border-zinc-800 text-xs text-zinc-500 bg-black/50"><tr><th class="p-3 w-16">Img</th><th class="p-3">Title</th><th class="p-3 text-right">Action</th></tr></thead><tbody id="admin-artworks-list" class="divide-y divide-zinc-800/50 text-sm"></tbody></table></div></div>
                     </div>
 
                     <div id="sec-thoughts" class="admin-section p-6 space-y-6">
-                        <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-white text-sm">想法 (Blog) 列表</h3><button onclick="openModal('thought')" class="bg-white text-black text-xs font-bold px-3 py-1.5 rounded hover:bg-zinc-200"><i class="fa-solid fa-plus"></i> 寫新想法</button></div>
-                        <div class="overflow-x-auto bg-zinc-950 border border-zinc-800 rounded"><table class="w-full text-left"><thead class="border-b border-zinc-800 text-xs text-zinc-500 bg-black/50"><tr><th class="p-3">日期</th><th class="p-3">標題</th><th class="p-3 text-right">操作</th></tr></thead><tbody id="admin-thoughts-list" class="divide-y divide-zinc-800/50 text-sm"></tbody></table></div>
+                        <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-white text-sm">Thoughts (Blog)</h3><button onclick="openModal('thought')" class="bg-white text-black text-xs font-bold px-3 py-1.5 rounded hover:bg-zinc-200"><i class="fa-solid fa-plus"></i> Write Post</button></div>
+                        <div class="overflow-x-auto bg-zinc-950 border border-zinc-800 rounded"><table class="w-full text-left"><thead class="border-b border-zinc-800 text-xs text-zinc-500 bg-black/50"><tr><th class="p-3">Date</th><th class="p-3">Title</th><th class="p-3 text-right">Action</th></tr></thead><tbody id="admin-thoughts-list" class="divide-y divide-zinc-800/50 text-sm"></tbody></table></div>
                     </div>
 
                     <div id="sec-otherWorks" class="admin-section p-6 space-y-6">
-                        <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-white text-sm">其他工作記錄</h3><button onclick="openModal('other')" class="bg-white text-black text-xs font-bold px-3 py-1.5 rounded hover:bg-zinc-200"><i class="fa-solid fa-plus"></i> 新增記錄</button></div>
-                        <div class="overflow-x-auto bg-zinc-950 border border-zinc-800 rounded"><table class="w-full text-left"><thead class="border-b border-zinc-800 text-xs text-zinc-500 bg-black/50"><tr><th class="p-3 w-16">圖</th><th class="p-3">標題</th><th class="p-3 text-right">操作</th></tr></thead><tbody id="admin-other-list" class="divide-y divide-zinc-800/50 text-sm"></tbody></table></div>
+                        <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-white text-sm">Other Works</h3><button onclick="openModal('other')" class="bg-white text-black text-xs font-bold px-3 py-1.5 rounded hover:bg-zinc-200"><i class="fa-solid fa-plus"></i> Add Record</button></div>
+                        <div class="overflow-x-auto bg-zinc-950 border border-zinc-800 rounded"><table class="w-full text-left"><thead class="border-b border-zinc-800 text-xs text-zinc-500 bg-black/50"><tr><th class="p-3 w-16">Img</th><th class="p-3">Title</th><th class="p-3 text-right">Action</th></tr></thead><tbody id="admin-other-list" class="divide-y divide-zinc-800/50 text-sm"></tbody></table></div>
                     </div>
 
-                    <div id="sec-submissions" class="admin-section p-6 space-y-6"><div class="flex justify-between gap-4 border-b border-zinc-800 pb-4"><div class="flex gap-2"><select id="filter-sub-type" class="bg-zinc-950 border border-zinc-800 rounded px-2 py-1 text-xs text-white" onchange="renderSubmissions()"><option value="all">所有來源</option><option value="class">畫班</option><option value="contact">聯絡</option></select><select id="filter-sub-status" class="bg-zinc-950 border border-zinc-800 rounded px-2 py-1 text-xs text-white" onchange="renderSubmissions()"><option value="all">所有狀態</option><option value="pending">待處理</option><option value="contacted">處理中</option><option value="resolved">已結案</option></select></div></div><div class="space-y-4" id="admin-submissions-list"></div></div>
+                    <!-- Inbox -->
+                    <div id="sec-submissions" class="admin-section p-6 space-y-6"><div class="flex justify-between gap-4 border-b border-zinc-800 pb-4"><div class="flex gap-2"><select id="filter-sub-status" class="bg-zinc-950 border border-zinc-800 rounded px-2 py-1 text-xs text-white" onchange="renderSubmissions()"><option value="all">All Status</option><option value="pending">Pending</option><option value="contacted">In Progress</option><option value="resolved">Resolved</option></select></div></div><div class="space-y-4" id="admin-submissions-list"></div></div>
                 </div>
             </div>
         </section>
@@ -192,26 +213,27 @@
 
     <footer class="bg-zinc-50 border-t border-zinc-200 mt-auto py-12"><div class="max-w-7xl mx-auto px-6 flex flex-col items-center gap-6"><div id="disp-footer-socials" class="flex gap-8 text-xl text-zinc-400"></div><p id="disp-footer" class="text-zinc-400 text-xs tracking-widest uppercase">© Art Studio.</p></div></footer>
 
+    <!-- Universal Modal -->
     <div id="data-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-zinc-900 border border-zinc-800 rounded-lg w-full max-w-lg p-6 shadow-2xl text-zinc-300 my-auto">
-            <h3 id="modal-title" class="text-lg font-bold text-white mb-6 border-b border-zinc-800 pb-3">新增資料</h3>
-            <form id="data-form" class="space-y-4">
+        <div class="bg-zinc-900 border border-zinc-800 rounded-lg w-full max-w-lg p-6 shadow-2xl text-zinc-300 my-auto mt-20 md:mt-auto">
+            <div class="flex justify-between items-center mb-6 border-b border-zinc-800 pb-3"><h3 id="modal-title" class="text-lg font-bold text-white">Add Data</h3><button onclick="closeModal()" class="text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button></div>
+            <form id="data-form" class="space-y-5">
                 <input type="hidden" id="modal-type"> <input type="hidden" id="modal-id">
-                
-                <div id="field-title" class="hidden"><label class="block text-xs text-zinc-500 mb-1">標題/名稱</label><input type="text" id="input-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2.5 text-white text-sm"></div>
-                <div id="field-category" class="hidden"><label class="block text-xs text-zinc-500 mb-1">分類</label><select id="input-category" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2.5 text-white text-sm"></select></div>
-                <div id="field-content" class="hidden"><label class="block text-xs text-zinc-500 mb-1">內容/描述</label><textarea id="input-content" rows="5" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2.5 text-white text-sm"></textarea></div>
+                <div id="field-title" class="hidden"><label class="block text-xs text-zinc-400 mb-1">Title / Name *</label><input type="text" id="input-title" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white text-sm font-bold focus:outline-none focus:border-zinc-500"></div>
+                <div id="field-category" class="hidden"><label class="block text-xs text-zinc-400 mb-1">Category</label><select id="input-category" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white text-sm focus:outline-none focus:border-zinc-500"></select></div>
                 <div id="field-image" class="hidden">
-                    <label class="block text-xs text-zinc-500 mb-1"><i class="fa-solid fa-image"></i> 圖片上傳 (免費圖床)</label>
-                    <div class="flex gap-2 mb-2"><input type="file" id="input-file" accept="image/*" class="text-xs text-zinc-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-zinc-800 file:text-white"><button type="button" id="btn-modal-upload" onclick="handleModalUpload()" class="px-3 py-1 bg-zinc-700 hover:bg-zinc-600 rounded text-xs text-white">上傳</button></div>
-                    <input type="url" id="input-url" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-white text-xs" placeholder="或直接貼上圖片 URL">
+                    <label class="block text-xs text-zinc-400 mb-2"><i class="fa-solid fa-image"></i> Image (Optional for Thoughts)</label>
+                    <div class="flex gap-2 mb-2"><input type="file" id="input-file" accept="image/*" class="w-full text-xs text-zinc-400 file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:bg-zinc-800 file:text-white cursor-pointer"><button type="button" id="btn-modal-upload" onclick="handleModalUpload()" class="px-4 py-1.5 bg-zinc-700 hover:bg-zinc-600 rounded text-xs text-white font-bold">Upload</button></div>
+                    <input type="url" id="input-url" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white text-xs focus:outline-none focus:border-zinc-500" placeholder="Or paste image URL directly">
                 </div>
+                <div id="field-content" class="hidden"><label class="block text-xs text-zinc-400 mb-1">Content / Description (Supports paragraphs)</label><textarea id="input-content" rows="6" class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 text-white text-sm leading-relaxed focus:outline-none focus:border-zinc-500"></textarea></div>
 
-                <div class="pt-4 flex justify-end gap-3"><button type="button" onclick="closeModal()" class="px-4 py-2 rounded border border-zinc-700 text-xs hover:bg-zinc-800 transition">取消</button><button type="submit" id="modal-submit-btn" class="px-4 py-2 rounded bg-white text-black font-bold text-xs hover:bg-zinc-200 transition">確定儲存</button></div>
+                <div class="pt-2 flex justify-end gap-3"><button type="button" onclick="closeModal()" class="px-5 py-2.5 rounded border border-zinc-700 text-xs hover:bg-zinc-800 transition">Cancel</button><button type="submit" id="modal-submit-btn" class="px-5 py-2.5 rounded bg-white text-black font-bold text-xs hover:bg-zinc-200 transition">Save Data</button></div>
             </form>
         </div>
     </div>
 
+    <!-- Firebase SDK (0 Cost Imgur Version) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -233,28 +255,28 @@
         const hexToRgb = (hex) => { let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex); return result ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) } : null; };
         const getContrastYIQ = (hexcolor) => { let rgb = hexToRgb(hexcolor); if(!rgb) return '#ffffff'; let yiq = ((rgb.r*299)+(rgb.g*587)+(rgb.b*114))/1000; return (yiq >= 128) ? '#000000' : '#ffffff'; };
 
-        window.navigate = (viewId) => { document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden')); document.getElementById(`view-${viewId}`).classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); if(viewId === 'admin' && (!currentUser || currentUser.email !== ADMIN_EMAIL)) { showToast("無權限", "error"); navigate('home'); } };
+        window.navigate = (viewId) => { document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden')); document.getElementById(`view-${viewId}`).classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); if(viewId === 'admin' && (!currentUser || currentUser.email !== ADMIN_EMAIL)) { showToast("Unauthorized", "error"); navigate('home'); } };
         window.toggleMobileMenu = () => document.getElementById('mobile-menu').classList.toggle('hidden');
         window.switchAdminMenu = (sec) => { document.querySelectorAll('.admin-menu-btn').forEach(btn => btn.classList.remove('admin-menu-active')); document.getElementById(`menu-${sec}`).classList.add('admin-menu-active'); document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active')); document.getElementById(`sec-${sec}`).classList.add('active'); };
 
         // Imgur API
-        const uploadToImgur = async (file) => { const fd = new FormData(); fd.append('image', file); try { const r = await fetch('https://api.imgur.com/3/image', { method: 'POST', headers: { 'Authorization': `Client-ID ${IMGUR_CLIENT_ID}` }, body: fd }); const d = await r.json(); if(d.success) return d.data.link; throw new Error("API Reject"); } catch(e) { throw new Error("圖片上傳失敗"); } };
+        const uploadToImgur = async (file) => { const fd = new FormData(); fd.append('image', file); try { const r = await fetch('https://api.imgur.com/3/image', { method: 'POST', headers: { 'Authorization': `Client-ID ${IMGUR_CLIENT_ID}` }, body: fd }); const d = await r.json(); if(d.success) return d.data.link; throw new Error("API Reject"); } catch(e) { throw new Error("Upload Failed"); } };
         
-        window.handleHeroUpload = async () => { const f = document.getElementById('upload-hero-bg'); if(!f.files[0]) return; const b = document.getElementById('btn-hero-upload'); b.innerHTML = '<span class="spinner"></span>'; b.disabled = true; try { const url = await uploadToImgur(f.files[0]); document.getElementById('set-hero-bg').value = url; document.getElementById('preview-hero-bg').src = url; showToast("上傳成功"); } catch(e){ showToast(e.message, "error"); } finally { b.innerHTML = '上傳'; b.disabled = false; } };
-        window.handleModalUpload = async () => { const f = document.getElementById('input-file'); if(!f.files[0]) return; const b = document.getElementById('btn-modal-upload'); b.innerHTML = '<span class="spinner"></span>'; b.disabled = true; try { const url = await uploadToImgur(f.files[0]); document.getElementById('input-url').value = url; showToast("上傳成功"); } catch(e){ showToast(e.message, "error"); } finally { b.innerHTML = '上傳'; b.disabled = false; } };
+        window.handleHeroUpload = async () => { const f = document.getElementById('upload-hero-bg'); if(!f.files[0]) return; const b = document.getElementById('btn-hero-upload'); b.innerHTML = '<span class="spinner"></span>'; b.disabled = true; try { const url = await uploadToImgur(f.files[0]); document.getElementById('set-hero-bg').value = url; document.getElementById('preview-hero-bg').src = url; showToast("Uploaded"); } catch(e){ showToast(e.message, "error"); } finally { b.innerHTML = 'Upload'; b.disabled = false; } };
+        window.handleModalUpload = async () => { const f = document.getElementById('input-file'); if(!f.files[0]) return; const b = document.getElementById('btn-modal-upload'); b.innerHTML = '<span class="spinner"></span>'; b.disabled = true; try { const url = await uploadToImgur(f.files[0]); document.getElementById('input-url').value = url; showToast("Uploaded"); } catch(e){ showToast(e.message, "error"); } finally { b.innerHTML = 'Upload'; b.disabled = false; } };
 
         // Auth
-        document.getElementById('auth-btn').addEventListener('click', async () => { if (currentUser && currentUser.email === ADMIN_EMAIL) { await signOut(auth); showToast("已登出"); await signInAnonymously(auth); } else { try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch(e){} } });
+        document.getElementById('auth-btn').addEventListener('click', async () => { if (currentUser && currentUser.email === ADMIN_EMAIL) { await signOut(auth); showToast("Logged out"); await signInAnonymously(auth); } else { try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch(e){} } });
         document.getElementById('admin-nav-btn').addEventListener('click', () => navigate('admin'));
-        onAuthStateChanged(auth, (user) => { currentUser = user; if (user && user.email === ADMIN_EMAIL) { document.getElementById('auth-text').textContent = "退出"; document.getElementById('admin-nav-btn').classList.remove('hidden'); setupAdminListeners(); } else { document.getElementById('auth-text').textContent = "登入"; document.getElementById('admin-nav-btn').classList.add('hidden'); if(!document.getElementById('view-admin').classList.contains('hidden')) navigate('home'); } if (user) setupPublicListeners(); });
+        onAuthStateChanged(auth, (user) => { currentUser = user; if (user && user.email === ADMIN_EMAIL) { document.getElementById('auth-text').textContent = "Logout"; document.getElementById('admin-nav-btn').classList.remove('hidden'); setupAdminListeners(); } else { document.getElementById('auth-text').textContent = "Login"; document.getElementById('admin-nav-btn').classList.add('hidden'); if(!document.getElementById('view-admin').classList.contains('hidden')) navigate('home'); } if (user) setupPublicListeners(); });
         signInAnonymously(auth).catch(()=>{});
 
-        // 監聽前端設定
+        // Setup Frontend Settings
         let publicSetup = false;
         const setupPublicListeners = () => {
             if (!currentUser || publicSetup) return; publicSetup = true;
             onSnapshot(doc(colSettings, 'site_config'), (snap) => {
-                const def = { themeColor: '#000000', metaDesc: '藝術家網站', logo: 'ART STUDIO', metaTitle: '現代藝術家 | 官方網站', navHome: '首頁', navPort: '作品', navThoughts: '想法', navOther: '其他記錄', navClass: '畫班', navContact: '聯絡', footer: '© Art Studio.', heroTitle: '探索藝術的邊界', heroSub: '以色彩與線條，捕捉靈魂的瞬間。', heroBg: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=2071&auto=format&fit=crop', heroBtn1: '觀看作品', heroBtn2: '報名畫班', portTitle: 'Selected Works', portSub: '精選創作', thoughtsTitle: 'Thoughts', thoughtsSub: '藝術理念與隨筆', otherTitle: 'Other Works', otherSub: '展覽、合作與其他紀錄', classTitle: '畫班招生', classDesc: '請填寫表單', contactTitle: '聯絡資訊', contactDesc: '歡迎聯絡', email: ADMIN_EMAIL, phone: '', address: '', socialIg: '', socialFb: '', socialYt: '', socialX: '' };
+                const def = { themeColor: '#000000', metaDesc: 'Modern Artist Gallery', logo: 'ART STUDIO', metaTitle: 'Modern Artist | Official Website', navHome: 'Home', navPort: 'Portfolio', navThoughts: 'Thoughts', navOther: 'Other Works', navClass: 'Classes', navContact: 'Contact', footer: '© Art Studio. All rights reserved.', heroTitle: 'Explore the Boundaries', heroSub: 'Capturing moments of the soul.', heroBg: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=2071&auto=format&fit=crop', heroBtn1: 'View Portfolio', heroBtn2: 'Enroll Classes', portTitle: 'Selected Works', portSub: 'Featured creations.', thoughtsTitle: 'Thoughts', thoughtsSub: 'Artistic philosophy and essays.', otherTitle: 'Other Works', otherSub: 'Exhibitions and collaborations.', classTitle: 'Art Classes', classDesc: 'Please fill out the form.', classTimeSlots: 'Saturday 10:00AM - 12:00PM, Sunday 2:00PM - 4:00PM', contactTitle: 'Contact', contactDesc: 'Get in touch.', email: ADMIN_EMAIL, phone: '', address: '', socialIg: '', socialFb: '', socialYt: '', socialX: '' };
                 const d = snap.exists() ? { ...def, ...snap.data() } : def;
                 document.documentElement.style.setProperty('--theme-color', d.themeColor); document.documentElement.style.setProperty('--theme-text', getContrastYIQ(d.themeColor));
                 document.getElementById('meta-desc').content = d.metaDesc; document.getElementById('meta-title').textContent = d.metaTitle;
@@ -262,10 +284,14 @@
                 for (const [k, v] of Object.entries(m)) { const el = document.getElementById(k); if(el) el.textContent = v; }
                 document.getElementById('disp-hero-bg').src = d.heroBg;
                 
+                // Populate Class Time Slots
+                const tsSelect = document.getElementById('class-timeslot');
+                if(tsSelect && d.classTimeSlots) { tsSelect.innerHTML = '<option value="" disabled selected>Select a time</option>' + d.classTimeSlots.split(',').map(s => `<option value="${s.trim()}">${s.trim()}</option>`).join(''); }
+
                 let iHtml = ''; if(d.email) iHtml += `<div><p class="text-xs uppercase text-zinc-400 mb-1">Email</p><p class="text-zinc-900">${d.email}</p></div>`; if(d.phone) iHtml += `<div><p class="text-xs uppercase text-zinc-400 mb-1">Phone</p><p class="text-zinc-900">${d.phone}</p></div>`; if(d.address) iHtml += `<div><p class="text-xs uppercase text-zinc-400 mb-1">Address</p><p class="text-zinc-900">${d.address}</p></div>`; document.getElementById('disp-contact-info-container').innerHTML = iHtml;
                 let sHtml = ''; if(d.socialIg) sHtml += `<a href="${d.socialIg}" target="_blank" class="hover:text-black transition"><i class="fa-brands fa-instagram"></i></a>`; if(d.socialFb) sHtml += `<a href="${d.socialFb}" target="_blank" class="hover:text-black transition"><i class="fa-brands fa-facebook-f"></i></a>`; if(d.socialYt) sHtml += `<a href="${d.socialYt}" target="_blank" class="hover:text-black transition"><i class="fa-brands fa-youtube"></i></a>`; if(d.socialX) sHtml += `<a href="${d.socialX}" target="_blank" class="hover:text-black transition"><i class="fa-brands fa-x-twitter"></i></a>`; document.getElementById('disp-footer-socials').innerHTML = sHtml;
                 
-                const fm = { 'set-theme-color': d.themeColor, 'set-meta-desc': d.metaDesc, 'set-logo': d.logo, 'set-meta-title': d.metaTitle, 'set-nav-home': d.navHome, 'set-nav-port': d.navPort, 'set-nav-thoughts': d.navThoughts, 'set-nav-other': d.navOther, 'set-nav-class': d.navClass, 'set-nav-contact': d.navContact, 'set-footer': d.footer, 'set-hero-title': d.heroTitle, 'set-hero-sub': d.heroSub, 'set-hero-bg': d.heroBg, 'set-hero-btn1': d.heroBtn1, 'set-hero-btn2': d.heroBtn2, 'set-port-title': d.portTitle, 'set-port-sub': d.portSub, 'set-thoughts-title': d.thoughtsTitle, 'set-thoughts-sub': d.thoughtsSub, 'set-other-title': d.otherTitle, 'set-other-sub': d.otherSub, 'set-class-title': d.classTitle, 'set-class-desc': d.classDesc, 'set-contact-title': d.contactTitle, 'set-contact-desc': d.contactDesc, 'set-info-email': d.email, 'set-info-phone': d.phone, 'set-info-address': d.address, 'set-social-ig': d.socialIg, 'set-social-fb': d.socialFb, 'set-social-yt': d.socialYt, 'set-social-x': d.socialX };
+                const fm = { 'set-theme-color': d.themeColor, 'set-meta-desc': d.metaDesc, 'set-logo': d.logo, 'set-meta-title': d.metaTitle, 'set-nav-home': d.navHome, 'set-nav-port': d.navPort, 'set-nav-thoughts': d.navThoughts, 'set-nav-other': d.navOther, 'set-nav-class': d.navClass, 'set-nav-contact': d.navContact, 'set-footer': d.footer, 'set-hero-title': d.heroTitle, 'set-hero-sub': d.heroSub, 'set-hero-bg': d.heroBg, 'set-hero-btn1': d.heroBtn1, 'set-hero-btn2': d.heroBtn2, 'set-port-title': d.portTitle, 'set-port-sub': d.portSub, 'set-thoughts-title': d.thoughtsTitle, 'set-thoughts-sub': d.thoughtsSub, 'set-other-title': d.otherTitle, 'set-other-sub': d.otherSub, 'set-class-title': d.classTitle, 'set-class-desc': d.classDesc, 'set-class-slots': d.classTimeSlots, 'set-contact-title': d.contactTitle, 'set-contact-desc': d.contactDesc, 'set-info-email': d.email, 'set-info-phone': d.phone, 'set-info-address': d.address, 'set-social-ig': d.socialIg, 'set-social-fb': d.socialFb, 'set-social-yt': d.socialYt, 'set-social-x': d.socialX };
                 for (const [k, v] of Object.entries(fm)) { const el = document.getElementById(k); if(el) el.value = v; }
                 document.getElementById('preview-hero-bg').src = d.heroBg;
                 if (!snap.exists() && currentUser.email === ADMIN_EMAIL) setDoc(doc(colSettings, 'site_config'), def);
@@ -278,16 +304,16 @@
         };
 
         let adminSetup = false;
-        const setupAdminListeners = () => { if (!currentUser || adminSetup) return; adminSetup = true; onSnapshot(colSubmissions, (s) => { submissionsData = []; let n = 0; s.forEach(d => { const x = d.data(); submissionsData.push({ id: d.id, ...x }); if(x.status === 'pending') n++; }); submissionsData.sort((a, b) => (b.timestamp?.toMillis() || 0) - (a.timestamp?.toMillis() || 0)); const b = document.getElementById('new-badge'); if(n > 0) { b.textContent = `新 ${n}`; b.classList.remove('hidden'); } else b.classList.add('hidden'); renderSubmissions(); }); };
+        const setupAdminListeners = () => { if (!currentUser || adminSetup) return; adminSetup = true; onSnapshot(colSubmissions, (s) => { submissionsData = []; let n = 0; s.forEach(d => { const x = d.data(); submissionsData.push({ id: d.id, ...x }); if(x.status === 'pending') n++; }); submissionsData.sort((a, b) => (b.timestamp?.toMillis() || 0) - (a.timestamp?.toMillis() || 0)); const b = document.getElementById('new-badge'); if(n > 0) { b.textContent = `New ${n}`; b.classList.remove('hidden'); } else b.classList.add('hidden'); renderSubmissions(); }); };
 
-        // 儲存設定
+        // Save Global Settings
         document.getElementById('master-settings-form').addEventListener('submit', async (e) => {
-            e.preventDefault(); if(!currentUser) return; const btn = document.getElementById('save-settings-btn'); btn.innerHTML = '<span class="spinner"></span>';
-            const d = { themeColor: document.getElementById('set-theme-color').value, metaDesc: document.getElementById('set-meta-desc').value, logo: document.getElementById('set-logo').value, metaTitle: document.getElementById('set-meta-title').value, navHome: document.getElementById('set-nav-home').value, navPort: document.getElementById('set-nav-port').value, navThoughts: document.getElementById('set-nav-thoughts').value, navOther: document.getElementById('set-nav-other').value, navClass: document.getElementById('set-nav-class').value, navContact: document.getElementById('set-nav-contact').value, footer: document.getElementById('set-footer').value, heroTitle: document.getElementById('set-hero-title').value, heroSub: document.getElementById('set-hero-sub').value, heroBg: document.getElementById('set-hero-bg').value, heroBtn1: document.getElementById('set-hero-btn1').value, heroBtn2: document.getElementById('set-hero-btn2').value, portTitle: document.getElementById('set-port-title').value, portSub: document.getElementById('set-port-sub').value, thoughtsTitle: document.getElementById('set-thoughts-title').value, thoughtsSub: document.getElementById('set-thoughts-sub').value, otherTitle: document.getElementById('set-other-title').value, otherSub: document.getElementById('set-other-sub').value, classTitle: document.getElementById('set-class-title').value, classDesc: document.getElementById('set-class-desc').value, contactTitle: document.getElementById('set-contact-title').value, contactDesc: document.getElementById('set-contact-desc').value, email: document.getElementById('set-info-email').value, phone: document.getElementById('set-info-phone').value, address: document.getElementById('set-info-address').value, socialIg: document.getElementById('set-social-ig').value, socialFb: document.getElementById('set-social-fb').value, socialYt: document.getElementById('set-social-yt').value, socialX: document.getElementById('set-social-x').value, updatedAt: serverTimestamp() };
-            try { await setDoc(doc(colSettings, 'site_config'), d, { merge: true }); showToast("已儲存"); } catch(e) { showToast("錯誤", "error"); } finally { btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> 儲存所有設定'; }
+            e.preventDefault(); if(!currentUser) return; const btn = document.getElementById('save-settings-btn'); btn.innerHTML = '<span class="spinner"></span> Saving...';
+            const d = { themeColor: document.getElementById('set-theme-color').value, metaDesc: document.getElementById('set-meta-desc').value, logo: document.getElementById('set-logo').value, metaTitle: document.getElementById('set-meta-title').value, navHome: document.getElementById('set-nav-home').value, navPort: document.getElementById('set-nav-port').value, navThoughts: document.getElementById('set-nav-thoughts').value, navOther: document.getElementById('set-nav-other').value, navClass: document.getElementById('set-nav-class').value, navContact: document.getElementById('set-nav-contact').value, footer: document.getElementById('set-footer').value, heroTitle: document.getElementById('set-hero-title').value, heroSub: document.getElementById('set-hero-sub').value, heroBg: document.getElementById('set-hero-bg').value, heroBtn1: document.getElementById('set-hero-btn1').value, heroBtn2: document.getElementById('set-hero-btn2').value, portTitle: document.getElementById('set-port-title').value, portSub: document.getElementById('set-port-sub').value, thoughtsTitle: document.getElementById('set-thoughts-title').value, thoughtsSub: document.getElementById('set-thoughts-sub').value, otherTitle: document.getElementById('set-other-title').value, otherSub: document.getElementById('set-other-sub').value, classTitle: document.getElementById('set-class-title').value, classDesc: document.getElementById('set-class-desc').value, classTimeSlots: document.getElementById('set-class-slots').value, contactTitle: document.getElementById('set-contact-title').value, contactDesc: document.getElementById('set-contact-desc').value, email: document.getElementById('set-info-email').value, phone: document.getElementById('set-info-phone').value, address: document.getElementById('set-info-address').value, socialIg: document.getElementById('set-social-ig').value, socialFb: document.getElementById('set-social-fb').value, socialYt: document.getElementById('set-social-yt').value, socialX: document.getElementById('set-social-x').value, updatedAt: serverTimestamp() };
+            try { await setDoc(doc(colSettings, 'site_config'), d, { merge: true }); showToast("Saved Successfully"); } catch(e) { showToast("Error saving", "error"); } finally { btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save All Settings'; }
         });
 
-        // 渲染作品
+        // Render Artworks
         window.setFilter = (id) => { currentFilter = id; renderArtworks(); };
         const renderArtworks = () => {
             const fc = document.getElementById('portfolio-filters'); const sc = document.getElementById('input-category'); const al = document.getElementById('admin-categories-list');
@@ -296,38 +322,40 @@
             
             const grid = document.getElementById('portfolio-grid'); grid.innerHTML = ''; const adminList = document.getElementById('admin-artworks-list'); adminList.innerHTML = '';
             const filtered = currentFilter === 'all' ? artworksData : artworksData.filter(a => a.categoryId === currentFilter);
-            if(filtered.length === 0) grid.innerHTML = `<div class="col-span-full text-center py-10 text-zinc-400">尚無資料</div>`;
+            if(filtered.length === 0) grid.innerHTML = `<div class="col-span-full text-center py-10 text-zinc-400">No records found.</div>`;
             filtered.forEach(art => {
                 const cName = categoriesData.find(c => c.id === art.categoryId)?.name || '';
                 grid.innerHTML += `<div class="masonry-item relative group bg-white shadow-sm overflow-hidden cursor-pointer" onclick="window.open('${art.url}', '_blank')"><img src="${art.url}" class="w-full h-auto object-cover transform group-hover:scale-[1.03] transition duration-700 ease-out"><div class="absolute inset-0 gallery-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6"><h3 class="text-xl font-heading text-white mb-1 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">${art.title}</h3><span class="text-[10px] tracking-widest text-zinc-300 uppercase translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">${cName}</span></div></div>`;
             });
-            artworksData.forEach(art => { const cName = categoriesData.find(c => c.id === art.categoryId)?.name || ''; adminList.innerHTML += `<tr class="border-b border-zinc-800/50 hover:bg-zinc-800/30"><td class="py-2"><img src="${art.url}" class="w-10 h-10 object-cover bg-zinc-800"></td><td class="py-2 font-bold text-white text-xs">${art.title}</td><td class="py-2 text-right"><button onclick="openModal('artwork','${art.id}')" class="text-blue-400 px-2 hover:text-white"><i class="fa-solid fa-pen"></i></button><button onclick="if(confirm('刪除？')) deleteDoc(doc(colArtworks, '${art.id}'));" class="text-red-500 px-2 hover:text-white"><i class="fa-solid fa-trash"></i></button></td></tr>`; });
+            artworksData.forEach(art => { const cName = categoriesData.find(c => c.id === art.categoryId)?.name || ''; adminList.innerHTML += `<tr class="border-b border-zinc-800/50 hover:bg-zinc-800/30"><td class="py-2"><img src="${art.url}" class="w-10 h-10 object-cover bg-zinc-800"></td><td class="py-2 font-bold text-white text-xs">${art.title}</td><td class="py-2 text-right"><button onclick="openModal('artwork','${art.id}')" class="text-blue-400 px-2 hover:text-white"><i class="fa-solid fa-pen"></i></button><button onclick="if(confirm('Delete?')) deleteDoc(doc(colArtworks, '${art.id}'));" class="text-red-500 px-2 hover:text-white"><i class="fa-solid fa-trash"></i></button></td></tr>`; });
         };
         
-        // 渲染想法
+        // Render Thoughts (Now supports Images and Text)
         const renderThoughts = () => {
             const list = document.getElementById('thoughts-list'); list.innerHTML = ''; const adminList = document.getElementById('admin-thoughts-list'); adminList.innerHTML = '';
-            if(thoughtsData.length === 0) list.innerHTML = `<div class="text-center py-10 text-zinc-400">尚無想法</div>`;
+            if(thoughtsData.length === 0) list.innerHTML = `<div class="text-center py-10 text-zinc-400">No records found.</div>`;
             thoughtsData.forEach(t => {
                 const date = t.timestamp ? new Date(t.timestamp.toDate()).toLocaleDateString() : '';
-                list.innerHTML += `<article class="bg-white border border-zinc-100 p-8 shadow-sm hover:shadow-md transition-shadow"><span class="text-xs text-zinc-400 tracking-widest uppercase">${date}</span><h3 class="text-2xl font-heading mt-2 mb-4 text-black">${t.title}</h3><p class="text-zinc-600 font-light leading-relaxed whitespace-pre-wrap">${t.content}</p></article>`;
-                adminList.innerHTML += `<tr class="border-b border-zinc-800/50 hover:bg-zinc-800/30"><td class="py-2 text-zinc-500 text-xs">${date}</td><td class="py-2 font-bold text-white text-xs">${t.title}</td><td class="py-2 text-right"><button onclick="openModal('thought','${t.id}')" class="text-blue-400 px-2 hover:text-white"><i class="fa-solid fa-pen"></i></button><button onclick="if(confirm('刪除？')) deleteDoc(doc(colThoughts, '${t.id}'));" class="text-red-500 px-2 hover:text-white"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+                const imgHtml = t.url ? `<img src="${t.url}" class="w-full h-auto max-h-[500px] object-cover mb-8 rounded shadow-sm">` : '';
+                list.innerHTML += `<article class="bg-white border border-zinc-100 p-8 md:p-12 shadow-sm hover:shadow-md transition-shadow">${imgHtml}<span class="text-xs text-zinc-400 tracking-widest uppercase">${date}</span><h3 class="text-3xl font-heading mt-3 mb-6 text-black">${t.title}</h3><p class="text-zinc-600 font-light leading-relaxed whitespace-pre-wrap">${t.content}</p></article>`;
+                adminList.innerHTML += `<tr class="border-b border-zinc-800/50 hover:bg-zinc-800/30"><td class="py-2 text-zinc-500 text-xs">${date}</td><td class="py-2 font-bold text-white text-xs">${t.title}</td><td class="py-2 text-right"><button onclick="openModal('thought','${t.id}')" class="text-blue-400 px-2 hover:text-white"><i class="fa-solid fa-pen"></i></button><button onclick="if(confirm('Delete?')) deleteDoc(doc(colThoughts, '${t.id}'));" class="text-red-500 px-2 hover:text-white"><i class="fa-solid fa-trash"></i></button></td></tr>`;
             });
         };
 
-        // 渲染其他記錄
+        // Render Other Works
         const renderOtherWorks = () => {
             const grid = document.getElementById('other-grid'); grid.innerHTML = ''; const adminList = document.getElementById('admin-other-list'); adminList.innerHTML = '';
-            if(otherWorksData.length === 0) grid.innerHTML = `<div class="col-span-full text-center py-10 text-zinc-400">尚無紀錄</div>`;
+            if(otherWorksData.length === 0) grid.innerHTML = `<div class="col-span-full text-center py-10 text-zinc-400">No records found.</div>`;
             otherWorksData.forEach(o => {
-                grid.innerHTML += `<div class="masonry-item bg-white border border-zinc-100 shadow-sm overflow-hidden flex flex-col"><img src="${o.url}" class="w-full h-48 object-cover"><div class="p-6"><h3 class="text-xl font-heading mb-2 text-black">${o.title}</h3><p class="text-sm text-zinc-500 font-light whitespace-pre-wrap">${o.content}</p></div></div>`;
-                adminList.innerHTML += `<tr class="border-b border-zinc-800/50 hover:bg-zinc-800/30"><td class="py-2"><img src="${o.url}" class="w-10 h-10 object-cover bg-zinc-800"></td><td class="py-2 font-bold text-white text-xs">${o.title}</td><td class="py-2 text-right"><button onclick="openModal('other','${o.id}')" class="text-blue-400 px-2 hover:text-white"><i class="fa-solid fa-pen"></i></button><button onclick="if(confirm('刪除？')) deleteDoc(doc(colOtherWorks, '${o.id}'));" class="text-red-500 px-2 hover:text-white"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+                const imgHtml = o.url ? `<img src="${o.url}" class="w-full h-64 object-cover">` : '';
+                grid.innerHTML += `<div class="masonry-item bg-white border border-zinc-100 shadow-sm overflow-hidden flex flex-col">${imgHtml}<div class="p-8"><h3 class="text-2xl font-heading mb-4 text-black">${o.title}</h3><p class="text-zinc-600 font-light leading-relaxed whitespace-pre-wrap">${o.content}</p></div></div>`;
+                adminList.innerHTML += `<tr class="border-b border-zinc-800/50 hover:bg-zinc-800/30"><td class="py-2"><img src="${o.url||''}" class="w-10 h-10 object-cover bg-zinc-800"></td><td class="py-2 font-bold text-white text-xs">${o.title}</td><td class="py-2 text-right"><button onclick="openModal('other','${o.id}')" class="text-blue-400 px-2 hover:text-white"><i class="fa-solid fa-pen"></i></button><button onclick="if(confirm('Delete?')) deleteDoc(doc(colOtherWorks, '${o.id}'));" class="text-red-500 px-2 hover:text-white"><i class="fa-solid fa-trash"></i></button></td></tr>`;
             });
         };
 
-        // Modal 系統 (統一處理 Artwork, Thought, Other)
-        document.getElementById('add-category-form').addEventListener('submit', async (e) => { e.preventDefault(); if(!currentUser) return; const input = document.getElementById('new-category-name'); if(!input.value.trim()) return; await addDoc(colCategories, { name: input.value.trim() }); input.value = ''; showToast("新增成功"); });
-        window.deleteCategory = async (id) => { if(confirm("確定刪除分類？")) await deleteDoc(doc(colCategories, id)); };
+        // Modal System (Handles Artworks, Thoughts, Other Works)
+        document.getElementById('add-category-form').addEventListener('submit', async (e) => { e.preventDefault(); if(!currentUser) return; const input = document.getElementById('new-category-name'); if(!input.value.trim()) return; await addDoc(colCategories, { name: input.value.trim() }); input.value = ''; showToast("Added Category"); });
+        window.deleteCategory = async (id) => { if(confirm("Delete Category?")) await deleteDoc(doc(colCategories, id)); };
 
         window.openModal = (type, id = null) => {
             document.getElementById('data-form').reset(); document.getElementById('modal-id').value = id || ''; document.getElementById('modal-type').value = type;
@@ -335,9 +363,10 @@
             tEl.classList.add('hidden'); cEl.classList.add('hidden'); dEl.classList.add('hidden'); iEl.classList.add('hidden');
             
             let d = null;
-            if(type === 'artwork') { document.getElementById('modal-title').textContent = id ? '編輯作品' : '新增作品'; tEl.classList.remove('hidden'); cEl.classList.remove('hidden'); iEl.classList.remove('hidden'); if(id) d = artworksData.find(x => x.id === id); }
-            if(type === 'thought') { document.getElementById('modal-title').textContent = id ? '編輯想法' : '新增想法'; tEl.classList.remove('hidden'); dEl.classList.remove('hidden'); if(id) d = thoughtsData.find(x => x.id === id); }
-            if(type === 'other') { document.getElementById('modal-title').textContent = id ? '編輯記錄' : '新增記錄'; tEl.classList.remove('hidden'); dEl.classList.remove('hidden'); iEl.classList.remove('hidden'); if(id) d = otherWorksData.find(x => x.id === id); }
+            // Unify image and content capabilities across types
+            if(type === 'artwork') { document.getElementById('modal-title').textContent = id ? 'Edit Artwork' : 'Add Artwork'; tEl.classList.remove('hidden'); cEl.classList.remove('hidden'); iEl.classList.remove('hidden'); if(id) d = artworksData.find(x => x.id === id); }
+            if(type === 'thought') { document.getElementById('modal-title').textContent = id ? 'Edit Thought' : 'Add Thought'; tEl.classList.remove('hidden'); dEl.classList.remove('hidden'); iEl.classList.remove('hidden'); if(id) d = thoughtsData.find(x => x.id === id); }
+            if(type === 'other') { document.getElementById('modal-title').textContent = id ? 'Edit Record' : 'Add Record'; tEl.classList.remove('hidden'); dEl.classList.remove('hidden'); iEl.classList.remove('hidden'); if(id) d = otherWorksData.find(x => x.id === id); }
             
             if(d) {
                 if(d.title) document.getElementById('input-title').value = d.title;
@@ -358,28 +387,28 @@
                 let col = type === 'artwork' ? colArtworks : type === 'thought' ? colThoughts : colOtherWorks;
                 let payload = { title, timestamp: serverTimestamp() };
                 if(type === 'artwork') payload = { ...payload, categoryId, url };
-                if(type === 'thought') payload = { ...payload, content };
+                if(type === 'thought') payload = { ...payload, content, url };
                 if(type === 'other') payload = { ...payload, content, url };
 
                 if(editId) { delete payload.timestamp; await updateDoc(doc(col, editId), payload); } else await addDoc(col, payload);
-                closeModal(); showToast("儲存成功");
-            } catch(e) { showToast("錯誤", "error"); } finally { btn.innerHTML = '確定儲存'; btn.disabled = false; }
+                closeModal(); showToast("Saved Successfully");
+            } catch(e) { showToast("Error", "error"); } finally { btn.innerHTML = 'Save Data'; btn.disabled = false; }
         });
 
-        // 表單收件
+        // Class Submissions Inbox (Removed Contact Form)
         window.renderSubmissions = () => {
-            const list = document.getElementById('admin-submissions-list'); const typeFilter = document.getElementById('filter-sub-type').value; const statusFilter = document.getElementById('filter-sub-status').value; list.innerHTML = '';
-            const filtered = submissionsData.filter(s => (typeFilter==='all' || s.type===typeFilter) && (statusFilter==='all' || s.status===statusFilter));
-            if(filtered.length === 0) return list.innerHTML = `<div class="text-center py-10 text-zinc-600">無資料</div>`;
+            const list = document.getElementById('admin-submissions-list'); const statusFilter = document.getElementById('filter-sub-status').value; list.innerHTML = '';
+            const filtered = submissionsData.filter(s => (statusFilter==='all' || s.status===statusFilter));
+            if(filtered.length === 0) return list.innerHTML = `<div class="text-center py-10 text-zinc-600">No records found.</div>`;
             filtered.forEach(s => {
                 const d = s.timestamp ? new Date(s.timestamp.toDate()).toLocaleString() : ''; const bg = s.status === 'pending' ? 'bg-red-950/20 border-red-900/30' : s.status === 'contacted' ? 'bg-blue-950/20 border-blue-900/30' : 'bg-zinc-950 border-zinc-800';
-                list.innerHTML += `<div class="border rounded p-4 ${bg}"><div class="flex justify-between items-start mb-2"><div><span class="bg-zinc-800 text-zinc-300 text-[10px] px-2 py-0.5 rounded uppercase mr-2">${s.type==='class'?'畫班':'聯絡'}</span></div><span class="text-[10px] text-zinc-500">${d}</span></div><h4 class="font-bold text-white text-sm">${s.name}</h4><div class="text-xs text-zinc-400 my-1">${s.email} ${s.phone? ' | '+s.phone : ''}</div><div class="bg-black/50 border border-zinc-800 p-2 rounded text-xs text-zinc-300 mt-2 whitespace-pre-wrap">${s.message}</div><div class="mt-3 flex gap-2 justify-end">${s.status !== 'pending' ? `<button onclick="updateStatus('${s.id}', 'pending')" class="text-[10px] px-2 py-1 rounded border border-zinc-700 text-zinc-400">待處理</button>` : ''}${s.status !== 'contacted' ? `<button onclick="updateStatus('${s.id}', 'contacted')" class="text-[10px] px-2 py-1 rounded border border-blue-900 text-blue-400">處理中</button>` : ''}${s.status !== 'resolved' ? `<button onclick="updateStatus('${s.id}', 'resolved')" class="text-[10px] px-2 py-1 rounded bg-zinc-700 text-white">結案</button>` : ''}</div></div>`;
+                list.innerHTML += `<div class="border rounded p-5 ${bg}"><div class="flex justify-between items-start mb-2"><div><span class="bg-zinc-800 text-theme font-bold text-[10px] px-2 py-0.5 rounded uppercase mr-2">CLASS ENROLLMENT</span></div><span class="text-[10px] text-zinc-500">${d}</span></div><h4 class="font-bold text-white text-base">${s.name}</h4><div class="text-xs text-zinc-400 my-1">${s.email} ${s.phone? ' | '+s.phone : ''}</div>${s.timeslot ? `<div class="text-xs text-blue-300 my-1 font-bold"><i class="fa-regular fa-clock"></i> ${s.timeslot}</div>` : ''}<div class="bg-black/50 border border-zinc-800 p-3 rounded text-sm text-zinc-300 mt-3 whitespace-pre-wrap">${s.message}</div><div class="mt-4 flex gap-2 justify-end">${s.status !== 'pending' ? `<button onclick="updateStatus('${s.id}', 'pending')" class="text-[10px] px-3 py-1.5 rounded border border-zinc-700 text-zinc-400">Mark Pending</button>` : ''}${s.status !== 'contacted' ? `<button onclick="updateStatus('${s.id}', 'contacted')" class="text-[10px] px-3 py-1.5 rounded border border-blue-900 text-blue-400 hover:bg-blue-900/30">In Progress</button>` : ''}${s.status !== 'resolved' ? `<button onclick="updateStatus('${s.id}', 'resolved')" class="text-[10px] px-3 py-1.5 rounded bg-zinc-700 text-white hover:bg-zinc-600">Resolve</button>` : ''}</div></div>`;
             });
         };
         window.updateStatus = async (id, status) => { await updateDoc(doc(colSubmissions, id), { status }); };
-        const submitForm = async (t, id, d) => { const b = document.querySelector(`#${id} button`); b.disabled = true; b.innerHTML = '<span class="spinner"></span>'; try { await addDoc(colSubmissions, { type: t, ...d, status: 'pending', timestamp: serverTimestamp() }); document.getElementById(id).reset(); showToast("已送出"); } catch(e) { showToast("發送失敗", "error"); } finally { b.disabled = false; b.innerHTML = '送出'; } };
-        document.getElementById('class-form').addEventListener('submit', e => { e.preventDefault(); submitForm('class', 'class-form', { name: document.getElementById('class-name').value, phone: document.getElementById('class-phone').value, email: document.getElementById('class-email').value, message: document.getElementById('class-message').value }); });
-        document.getElementById('contact-form').addEventListener('submit', e => { e.preventDefault(); submitForm('contact', 'contact-form', { name: document.getElementById('contact-name').value, email: document.getElementById('contact-email').value, message: document.getElementById('contact-message').value }); });
+        const submitForm = async (t, id, d) => { const b = document.querySelector(`#${id} button`); b.disabled = true; b.innerHTML = '<span class="spinner"></span>'; try { await addDoc(colSubmissions, { type: t, ...d, status: 'pending', timestamp: serverTimestamp() }); document.getElementById(id).reset(); showToast("Submitted successfully!"); } catch(e) { showToast("Submission failed", "error"); } finally { b.disabled = false; b.innerHTML = 'Submit'; } };
+        
+        document.getElementById('class-form').addEventListener('submit', e => { e.preventDefault(); submitForm('class', 'class-form', { name: document.getElementById('class-name').value, phone: document.getElementById('class-phone').value, email: document.getElementById('class-email').value, timeslot: document.getElementById('class-timeslot').value, message: document.getElementById('class-message').value }); });
     </script>
 </body>
 </html>
